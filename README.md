@@ -5,4 +5,9 @@ This R package is associated with a talk given at [ECPA13](http://www.ecpa13.com
 devtools::install_github('dostodabsi/simrasch')
 ```
 
-See the vignette('simulations') for discussion of simulation results, and vignette('talk') for the presentation.
+```{r}
+library('simrasch')
+
+vignette('simulations') # for discussion of simulation results
+vignette('talk') # for the presentation given at ECPA13
+```
