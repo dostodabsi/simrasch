@@ -1,0 +1,14 @@
+Package: simrasch
+Title: Implements functions to simulate performance of item statistics of Rasch; complementary package to a talk given at ECPA13
+Version: 0.0.1
+Authors@R: c(
+  person("Fabian", "Dablander", email = "dostodabsi@gmail.com", role = c("aut", "cre")),
+  person("Peter", "Edelsbrunner", email = "peter.edelsbrunner@ifv.gess.ethz.ch", role = c("aut")))
+Description: Implements functions to simulate performance of item statistics of Rasch
+Depends: R (>= 3.2.1)
+License: MIT
+LazyData: true
+Suggests: knitr
+VignetteBuilder: knitr
+Imports: eRm, doParallel
+URL: https://github.com/dostodabsi/simrasch
