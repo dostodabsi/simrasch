@@ -4,17 +4,18 @@
 \alias{summarize}
 \title{Store the results of the compute_err function in a data.frame}
 \usage{
-summarize(err_res)
+summarize(sim_res, cutoff = c(0.8, 1.2))
 }
 \arguments{
 \item{err_res:}{compute_error result}
 }
 \value{
 returns a data.frame with four columns: the number of participants (n),
-the number of items (items), and the percent (!) that pvalues and infit statistics
-respectively would reject an item. Thus note that the column p-value and infit statistics
-are **not** p-values nor infit statistics. It is a percent which is based on the number of rejections
-of items due to standardized p-values  < .05 or infit statistics outside a certain cutoff (say .8 - 1.2)
+the number of items (items), and the percent (!) that pvalues and infit
+statistics respectively would reject an item. Thus note that the column
+p-value and infit statistics are **not** p-values nor infit statistics.
+It is a percent which is based on the number of rejections of items due to
+standardized p-values  < .05 or infit statistics outside a certain cutoff
 }
 \description{
 Store the results of the compute_err function in a data.frame

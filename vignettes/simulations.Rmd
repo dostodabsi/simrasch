@@ -28,12 +28,13 @@ sigma # factor loadings for the theoretically plausible 4-dimensional model of s
 ## Simulation specification
 ```{r, eval = FALSE}
 # violation of equal item discrimination
-res_2pl1 <- main_sim(n, items, 1000, parallel = TRUE, sim.2pl, .1)
-res_2pl3 <- main_sim(n, items, 1000, parallel = TRUE, sim.2pl, .3)
-res_2pl5 <- main_sim(n, items, 1000, parallel = TRUE, sim.2pl, .5)
+res_2pl1 <- main_sim(n, items, 1000, sim.2pl, .1, parallel = TRUE, cores = 4)
+res_2pl3 <- main_sim(n, items, 1000, sim.2pl, .3, parallel = TRUE, cores = 4)
+res_2pl5 <- main_sim(n, items, 1000, sim.2pl, .5, parallel = TRUE, cores = 4)
 
 # violation of unidimensionality
-res_mult <- main_sim(n, items, 1000, parallel = TRUE, sim.xdim, Sigma = sigma, weights = weights)
+res_mult <- main_sim(n, items, 1000, sim.xdim,
+                    Sigma = sigma, weights = weights, parallel = TRUE, cores = 4)
 ```
 
 ## Results
@@ -46,20 +47,15 @@ Below we look at how the itemfit statistics (infit, standardized p-values) behav
 
 ## True model: Rasch
 ```{r}
-err_rasch <- compute_errors(rasch, cutoff = c(.8, 1.2))
-sm_rasch <- summarize(err_rasch)
-sm_rasch
+res_rasch <- readRDS('../data/res_rasch.RDS')
+sm_rasch <- summarize(res_rasch)
 ```
 
-When the Rasch model is the data generating model, itemfit statistics using the cutoff of .8 and 1.2 are reasonably good in their item removal suggestions. With increasing sample size the number of items removed goes to zero. It seems that infit statistics are what is called **consistent**. In the limit, they will lead to the correct conclusion; at least when the Rasch model really is true. Standardized p-values, on the other hand, do not show this asymptotically correct behavior; p-values are inconsistent.
+When the Rasch model is the data generating model, itemfit statistics using the cutoff of .8 and 1.2 are reasonably good in their item removal suggestions. With increasing sample size the number of items removed goes to zero. It seems that infit statistics are what is called **consistent**. In the limit, they will lead to the correct conclusion; at least when the Rasch model really is true. Standardized p-values, on the other hand, do not show this asymptotically correct behavior; p-values are inconsistent (with $\alpha$% errors).
 
-```{r}
-library('ggplot2')
-
-# TODO
+```{r, warning = FALSE, fig.width = 7, fig.height = 7}
+visualize(sm_rasch)
 ```
-
-
 
 
 # I. Violation: Item discrimination
@@ -74,17 +70,28 @@ eRm::itemfit(pp)
 ```
 
 ## Simulation results
-```{r}
-err_2pl5 <- compute_errors(res_2pl5)
-sm_2pl5 <- summarize(err_2pl5)
-sm_2pl5
+```{r, fig.width = 7, fig.height = 7}
+res_2pl5 <- readRDS('../data/res_2pl5.RDS')
+res_2pl3 <- readRDS('../data/res_2pl3.RDS')
+res_2pl1 <- readRDS('../data/res_2pl1.RDS')
+sm_pl <- rbind(summarize(res_2pl1), summarize(res_2pl3), summarize(res_2pl5))
+visualize(sm_pl)
 ```
 
-Based on our simulations, we can say that when $\sigma = .5$, infit statistics require us to remove approximately 20 percent of the items in small sample size scenarios ($n = 100$), 15 percent in mediam sample size scenarios ($n = 300$) and about 12 percent with large sample size ($n = 1000$).
+In this simulation, the item discriminations are drawn from a lognormal distribution with $\mu = 0$ and $\sigma = x$, where in our simulations x was either .1, .3, or .5.
+
+Based on our simulations, we can say that when $\sigma = .5$, infit statistics require us to remove approximately 20 percent of the items in small sample size scenarios ($n = 150$), 15 percent in mediam sample size scenarios ($n = 300$, $n = 500$) and about 12 percent with large sample size ($n = 1000$).
 
 Intriguingly, one can not really conclude anything at this point. One reasoning is that the items are no good, say because of their formulation, and thus need to be removed; or the Rasch model simply is inadequate. The different conclusions nicely embody the difference between the two "Rasch schools", one applied, one theoretical. The fundamental problem is that one cannot make theoretical claims based on such "applied" model fitting procedures.
 
-TODO: 2pl1, 2pl3 (for plots)
+Notice that with $\sigma = .1$, the bias is too small and the Rasch model actually holds (we checked this using the model comparison procedure below).
+
+## Further Simulations
+What happens if we remove items based on infit statistics and then assess the fit of the Rasch model. Does the Rasch model now hold? Simple simulations based on the Andersen Likelihood Ratio test show that this is not at all the case! Even after brutal removal of items, the Rasch model does not hold:
+```{r}
+#sim_removal(...)
+```
+
 
 ## Appropriate test
 To test for varying item discrimination one would pit the 1PL (Rasch) against the 2PL (Birnbaum) model. We do this by using the package **mirt**.
@@ -134,9 +141,7 @@ When fitting a unidimensional Rasch model to the 4-dimensional data, and inspect
 ## Simulation results
 ```{r}
 res_mult <- readRDS('../data/res_mult_n1000_i60_i120.RDS')
-
-err_mult <- compute_errors(res_mult)
-summarize(err_mult)
+summarize(res_mult)
 ```
 
 ```{r}
@@ -172,7 +177,8 @@ model <- 'f1=1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57
           f4=4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60
           cov=f1*f2*f3*f4' # how exactly should one sp
 
-#fit2pl <- mirt(dat, 4, itemtype = '2PL') # this doesn't converge ...
+fitm <- mirt(dat, 1, itemtype = 'Rasch', verbose = FALSE)
+#fit2pl <- mirt(dat, 4, itemtype = '2PL')
 ```
 
 # Miscellaneous Problems
@@ -198,7 +204,7 @@ But these factors measure something distinct! By aggregating over the factors we
 # Conclusion
 Item infit statistics were developed for applied Rasch modeling. The adage is that instead of changing our model, we need to change our data because the psychometric properties of the Rasch model are just that good. For applied settings, we would not want to miss out one them!
 
-However, for theory development, solely relying on item infit is detrimental. The current literature on scientific reasoning is beset by tautological testing. Researchers setout to test whether scientific reasoning can be considered unidimensional. They then collect data measuring four theoretically motivated, distinct subsets of scientific reasoning, and fit a Rasch model. Based on item infit statistics, items that do not "fit" - but which certainly are of theoretical value! - are removed. It is concluded that the Rasch model fits, and thus that scientific reasoning is unidimensional.
+However, for theory development, solely relying on item infit is detrimental. The current literature on scientific reasoning is beset by tautological testing. Researchers set out to test whether scientific reasoning can be considered unidimensional. They then collect data measuring four theoretically motivated, distinct subsets of scientific reasoning, and fit a Rasch model. Based on item infit statistics, items that do not "fit" - but which certainly are of theoretical value! - are removed. It is concluded that the Rasch model fits, and thus that scientific reasoning is unidimensional.
 
 We have shown that infit statistics cannot detect multidimensionality. Researchers need to extend their repertoire of tests.
 

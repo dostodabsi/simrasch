@@ -1,4 +1,5 @@
 library('eRm')
+library('lattice')
 library('doParallel')
 
 
@@ -11,7 +12,7 @@ library('doParallel')
 #' @param ...: additional arguments to model_sim
 #' @return returns the estimated eRm object
 #' @examples
-#' estimate(400, 30, sim.locdep, .4)
+#' estimate(400, 30, sim.2pl, .5)
 estimate <- function(n, items, model_sim, ...) {
   tryCatch({
     RM(model_sim(n, items, ...))
@@ -59,20 +60,62 @@ get_itemfit <- function(n, items, times, parallel, model_sim, ...) {
 }
 
 
+#' Compute rejection of Rasch model based on Likelihood Ratio test after
+#' items have been removed on the basis of item infit statistics
+#'
+#' @param n, items, times: numeric (single value)
+#' @param model_sim: function to simulate Rasch data
+#' @param ...: additional arguments to model_sim
+#' @param cores: number of cores to run in parallel
+#' @param cutoff: item infit statistic cutoff
+#' @return returns an object of class 'sim_res'
+#' which is an array that stores #times #items x 3 matrices
+#' @examples
+#' sim_removal(100, 20, sim.2pl, .4)
+sim_removal <- function(n, items, times, model_sim, ...,
+                        cores = detectCores(), cutoff = c(.8, 1.2)) {
+
+  cat('running in parallel\n') # always >:)
+  registerDoParallel(cores = cores)
+  
+  low <- cutoff[1]
+  high <- cutoff[2]
+  pvals <- foreach(k = 1:times) %dopar% {
+    fitted <- estimate(n, items, model_sim, ...)
+    pp <- person.parameter(fitted)
+    infit <- unname(itemfit(pp)$i.infitMSQ)
+    remove <- which(infit < low | infit > high)
+    if (length(remove) != 0) {
+      reducedX <- fitted$X[, -remove]
+      refitted <- RM(reducedX)
+    } else {
+      refitted <- fitted
+    }
+    LRtest(refitted)$pvalue
+  }
+  unlist(pvals)
+}
+
+
 #' Runs the main simulation
 #'
 #' @param times: numeric
 #' @param n, items: numeric vectors
 #' @param model_sim: function to simulate Rasch data
+#' @param Sigma: factor correlation matrix for multidimensional data
+#' @param weights: item loadings of the factor structure
+#' @param parallel: if simulation should be run in parallel
+#' @param cores: number of cores to run in parallel
 #' @param ...: additional arguments to model_sim
 #' @return returns a list that stores objects of class 'sim_res'
 #' each array stores #times simulations of each possible n x items combination
 #' @examples
-#' main_sim(c(100, 400, 1000), c(10, 50, 70), sim.2pl, .4)
-main_sim <- function(n, items, times, parallel = TRUE, model_sim, ..., Sigma = NULL, weights = NULL) {
+#' main_sim(c(100, 400), c(10, 50), 1000, sim.2pl, .5, parallel = TRUE, cores = 3)
+main_sim <- function(n, items, times, model_sim, ..., Sigma = NULL,
+                     weights = NULL, parallel = TRUE, cores = detectCores()) {
   if (parallel) {
     cat('running in parallel\n')
-    registerDoParallel(cores = detectCores() - 1) # for parallel execution
+    registerDoParallel(cores = cores) # for parallel execution
   }
 
   g <- 1
@@ -107,8 +150,9 @@ main_sim <- function(n, items, times, parallel = TRUE, model_sim, ..., Sigma = N
 #'
 #' @param sim_res: simulation results
 #' @param cutoff: itemfit cutoff
-#' @return returns a list with alpha / beta errors across all person x item combinations
-#' aggregated over all matrices, and the number of items removed (for each matrix)
+#' @return returns a list with alpha / beta errors across all
+#' person x item combinations aggregated over all matrices, and the
+#' number of items removed (for each matrix)
 #' @examples
 #' compute_errors(sim_res)
 compute_errors <- function(sim_res, cutoff = c(.8, 1.2)) {
@@ -154,15 +198,49 @@ compute_errors <- function(sim_res, cutoff = c(.8, 1.2)) {
 #'
 #' @param err_res: compute_error result
 #' @return returns a data.frame with four columns: the number of participants (n),
-#' the number of items (items), and the percent (!) that pvalues and infit statistics
-#' respectively would reject an item. Thus note that the column p-value and infit statistics
-#' are **not** p-values nor infit statistics. It is a percent which is based on the number of rejections
-#' of items due to standardized p-values  < .05 or infit statistics outside a certain cutoff (say .8 - 1.2)
+#' the number of items (items), and the percent (!) that pvalues and infit
+#' statistics respectively would reject an item. Thus note that the column
+#' p-value and infit statistics are **not** p-values nor infit statistics.
+#' It is a percent which is based on the number of rejections of items due to
+#' standardized p-values  < .05 or infit statistics outside a certain cutoff
 #' @examples
 #' summarize(err_res)
-summarize <- function(err_res) {
-  pick <- function(sim) list('n' = sim$n, 'items' = sim$nr_items,
-                             'pval' = sim$pval, 'infit' = sim$rm_percent,
-                             'sims' = length(sim$rm_items))
-  data.frame(t(sapply(err_res, pick)))
+summarize <- function(sim_res, cutoff = c(.8, 1.2)) {
+  err_res <- compute_errors(sim_res, cutoff = cutoff)
+  pick <- function(sim) list('sims' = length(sim$rm_items),
+                             'n' = sim$n, 'items' = sim$nr_items,
+                             'pval' = round(sim$pval, 3),
+                             'infit' = round(sim$rm_percent, 3),
+                             'simtype' = attr(sim_res, 'simtype')[1],
+                             'violation' = attr(sim_res, 'simtype')[2])
+  df <- data.frame(t(sapply(err_res, pick)))
+  df <- data.frame(apply(df, 2, unlist))
+  df$infit <- as.numeric(as.character(df$infit))
+  df
+}
+
+
+#' Visualizes the % items removed given a simulation result
+#'
+#' @param res_sum: summarized simulation result
+#' @return plots a trellis graph visualising the results
+#' @examples
+#' spl <- summarize(sim_res)
+#' visualize(spl)
+visualize <- function(res_sum) {
+  if (all(is.na(res_sum$violation))) res_sum$violation <- 'none'
+  xyplot(infit ~ items | n, groups = violation, data = res_sum,
+         type = c('p', 'g'),
+         xlab = list(label = 'item size', cex = 2),
+         ylab = list(label = '% removed items', cex = 2),
+         auto.key = list(columns = 2, cex = 2),
+         par.settings = simpleTheme(pch = 21, cex = 2),
+         par.strip.text = list(cex = 1.8),
+         axis.text = list(cex = 2),
+         scales = list(cex = 1.6),
+
+         panel = function(...) {
+           panel.abline(h = .05, lty = 'dotted', col = 'black', lwd = 2)
+           panel.xyplot(...)
+         })
 }

@@ -10,5 +10,5 @@ License: MIT
 LazyData: true
 Suggests: knitr
 VignetteBuilder: knitr
-Imports: eRm, doParallel
+Imports: eRm, lattice, doParallel
 URL: https://github.com/dostodabsi/simrasch

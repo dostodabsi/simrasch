@@ -12,8 +12,9 @@ compute_errors(sim_res, cutoff = c(0.8, 1.2))
 \item{cutoff:}{itemfit cutoff}
 }
 \value{
-returns a list with alpha / beta errors across all person x item combinations
-aggregated over all matrices, and the number of items removed (for each matrix)
+returns a list with alpha / beta errors across all
+person x item combinations aggregated over all matrices, and the
+number of items removed (for each matrix)
 }
 \description{
 Compute the items suggested to be removed / revised based on item infit

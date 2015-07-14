@@ -21,6 +21,6 @@ tryCatch until the simulated data matrix is neither ill-conditioned
 nor has a participant with all 0 or all 1
 }
 \examples{
-estimate(400, 30, sim.locdep, .4)
+estimate(400, 30, sim.2pl, .5)
 }
 

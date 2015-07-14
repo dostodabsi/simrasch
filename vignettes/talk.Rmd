@@ -28,29 +28,27 @@ vignette: >
       </div>
 -->
 
-## Scientific Thinking
-
+## Scientific Thinking {.flexbox .vcenter }
 <div class="notes">
       Scientific thinking entails various psychological processes that are needed for intentional knowledge seeking and the coordination of theory and evidence, which lie at the heart of the scientific process.
       [BULLET 1]For example, to find out whether researchers in scientific thinking can adequately use the Rasch model, a research question and hypotheses have to be formulated, a controlled experimental design has to be developed and conducted, data have to be interpreted and conclusions drawn.
       [BULLET 2] Since the early decades of educational and developmental psychology, researchers have been interested in the education of scientific thinking to raise responsible citizens, hence also in its development and its assessment.
       [BULLET 3] The first major wave of instrument development to assess scientific reasoning took place in the 1970s and 1980s.
       Following the inclusion of scienficic reasoning in the PISA and TIMMS assessment programs, a second wave of instrument development started in the 2000s. In this second wave, researchers started to apply the Rasch model in the process of instrument development.
+- Hypothesis generation, evidence generation, evidence evaluation, drawing conclusions (Mayer, 2007).
+- *Processes for intentional knowledge seeking and coordination of theory and evidence* (Mayer et al., 2014).
 </div>
 
-*Processes for intentional knowledge seeking and coordination of theory and evidence* (Mayer et al., 2014).
+![structure](img/structure.png)
 
-Hypothesis generation, evidence generation, evidence evaluation, drawing conclusions (Mayer, 2007).
-
-> - Long interest in education, development, **assessment**
-  (Blair, 1940; Piaget & Inhelder, 1958).
+## Scientific Thinking
+- Long interest in education, development, **assessment** (Blair, 1940; Piaget & Inhelder, 1958).
   
-> - Two waves of test development (Opitz, Fischer, & Heene, submitted)
+- Two waves of test development (Opitz, Fischer, & Heene, submitted)
     * wave I: 1970-1990.
     * wave II: since 2000s. Following PISA etc. **Rasch Application.** 
   
 ## Research Questions {.flexbox .vcenter}
-
 <div class="notes">
       In general, we welcome the idea of applying the Rasch model in the field of scientific thinking.
       In the formerly used framework of classical test theory, strong measurement characteristics are assumed axiomatically and cannot be tested.
@@ -82,10 +80,8 @@ $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
 </div>
     
 ## The Rasch Model
-
 <div class="notes">
       Notably, this elegant model simplicity implies strong assessment characteristics.
-
 </div>
 
 <div class="centered">
@@ -99,7 +95,6 @@ $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
 </div>
 
 ## The Rasch Model
-
 <div class="notes">
 If the answers on an instrument are in accordance with the Rasch model, various characteristics are given that are again interrelated and that are very favorable for research purposes and for applied measurement.
       [BULLET 1] First, a test taker's score entails all information about the assessed psychological trait, in our case about the test taker's scientific thinking ability. There is no need to take a look at which specific items the test taker solved.
@@ -127,7 +122,6 @@ $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
 </div>  
 
 ## The Rasch Model
-
 <div class="notes">
       However, in turn the favorable characteristics demand strong theoretical and statistical model assumptions
 </div>
@@ -143,7 +137,6 @@ $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
 </div> 
 
 ## The Rasch Model: Strong Assumptions
-
 <div class="notes">
       The assumptions of the Rasch model are all interrelated.
       [BULLET 1] Central is the assumption that only one coherent psychological trait is involved in the answer process to all items.
@@ -162,8 +155,7 @@ $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
       ![Image](img/ICCAFR_size.png)
 
 
-## Practices in the Field: Rasch **Application** {.smaller}
-
+## Practices in the Field: Rasch **Application**
 <div class="notes">
       The mentioned favorable characteristics of an instrument are only given if the Rasch model holds.
       Therefore, we were interested in the practices of model fit testing in research on scientific thinking.
@@ -172,21 +164,30 @@ $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
       First, in a few of the articels statistical tests were applied to compare measurement models with different numbers of dimensions, outfit statistics were investigated to assess model fit, or measurement invariance was investigated between groups that the researchers wanted to compare on the instrument.
       Second, more interestingly and crucially, the strategies of all of the researchers shared three characteristics. In each of the articles, a unidimensional Rasch model was estimated, always in the software ConQuest, and item infit statistics are reported and used as the main source of model fit assessment.
       The question comes up whether item infit statistics are an appropriate means of model fit testing.
-</div>
-
-- 7 instruments based on Rasch model, mostly since 2010 (Review: Opitz, Fischer, & Heene, submitted)
-
-| Reference               | infit | criterion                 | reliability | lrt | irem | mat | Software             |
+| Reference               | Infit | Criterion                 | Reliability | lrt | irem | mat | Software             |
 |-------------------------|-------|---------------------------|-------------|-----|------|-----|----------------------|
 | Mayer at al. (2014)     | x     | -                         | EAP/PV      | -   | -    | -   | ConQuest             |
 | Koerber et al. (2014)   | x     | 0.85-1.15 (-)             | EAP/PV      | -   | x    | x   | ConQuest             |
 | Hartmann et  al. (2015) | x     | -                         | EAP/PV      | -   | x    | x   | ConQuest             |
 | Nowak et al. (2013)     | x     | 0.8-1.2 (Adams, 2002)     | EAP/PV      | x   | x    | x   | ConQuest             |
-| Grube (2010)            | x     | 0.8-1.2 (Adams, 2000) + t | EAP/PV      | x   | x    | x   | ConQuest             |
+| Grube (2010)            | x     | 0.8-1.2 (Adams, 2000)     | EAP/PV      | x   | x    | x   | ConQuest             |
 | Heene (2007)            | x     | 0.8-1.2 (Wright, 2000)    | PSR/ISR     | -   | x    | -   | ConQuest, WS, FC, WM |
 | Brown et al. (2010)     | x     | -                         | PSR         | -   | -    | -   | ConQuest             |
+## Practices in the Field: Rasch **Application**
+- 7 instruments based on Rasch model, mostly since 2010 (Review: Opitz, Fischer, & Heene, submitted)
+- Typical approach is to fit **unidimensional Rasch model** in **ConQuest software**, remove items based on **infit statistics**
 
-- Result: Typical approach: Fit **unidimensional Rasch model** in **ConQuest software**, remove items based on **infit statistics**
+</div>
+
+| Reference               | Infit | Criterion                 | Software              |
+|-------------------------|-------|---------------------------|-----------------------|
+| Mayer at al. (2014)     | x     | -                         |  ConQuest             |
+| Koerber et al. (2014)   | x     | 0.85-1.15 (-)             |  ConQuest             |
+| Hartmann et  al. (2015) | x     | -                         |  ConQuest             |
+| Nowak et al. (2013)     | x     | 0.8-1.2 (Adams, 2002)     |  ConQuest             |
+| Grube (2010)            | x     | 0.8-1.2 (Adams, 2000)     |  ConQuest             |
+| Heene (2007)            | x     | 0.8-1.2 (Wright, 2000)    |  ConQuest, WS, FC, WM |
+| Brown et al. (2010)     | x     | -                         |  ConQuest             |
 
 ## Itemfit
 
@@ -199,22 +200,36 @@ $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
       [BULLET] The literature says no. Item infit statistics are underpowered against deviations from the major assumptions of the Rasch model. In addition, they should only be applied after global model fit tests have been applied. The plain removal of non fitting items might reduce validity since usually each item is developed to cover a part of the theoretical construct of interest.
 </div>
 
-Degree of deviation from expected scores given the Rasch model, on level of the item.
 
+- Based on the individual response residuals
 <div class="centered">
-$INFIT_i = \frac{\sum^2_{p=1}R^2_{pi}}{\sum^2_{p=1}VAR(X_{pi})}$
+$$
+\begin{align}
+R_{pi} &= X_{pi} - E_{pi}\\
+Z_{pi}^2 &= \frac{R_{pi}^2}{VAR(X_{pi})}\\
+\end{align}
+$$
 </div>
 
-> - Reviewed articles: Cutoff mostly 0.8-1.2 . Exceeding items removed.
+> -
+$$
+\begin{equation}
+INFIT_i = \frac{\sum^n_{p=1}R^2_{pi}}{\sum^n_{p=1}VAR(X_{pi})}
+\end{equation}
+$$
 
-> - Result: Adequacy for model fit testing **strongly criticized** (Christensen & Kreiner, 2013; Heene et al., 2014; Smith, 1995; Smith, 1996; Smith et al., 1998)
+> - Degree of item-level deviation from expected scores given the Rasch model
+
+## Itemfit
+- Adequacy for model fit testing **strongly criticized** (Christensen & Kreiner, 2013; Heene et al., 2014; Smith, 1995; Smith, 1996; Smith et al., 1998)
     * Underpowered.
     * Should be applied only after investigation of **global model fit**.
     * Item removal might **reduce construct validity**.
-    * **Conclusion: Item infit statistics are in general no adequate means to evaluate fit of the Rasch model.**
     
-## Itemfit: Simulation I {.smaller}
-
+    
+> - **Item infit statistics are in general no adequate means to evaluate fit of the Rasch model.**
+    
+## Itemfit: Simulations
 <div class="notes">
       We did not want to rely only on available literature.
       Therefore, we conducted simulations to examine the appropriateness of itemfit statistics in the specific scenarios from the reviewed articles.
@@ -225,19 +240,30 @@ $INFIT_i = \frac{\sum^2_{p=1}R^2_{pi}}{\sum^2_{p=1}VAR(X_{pi})}$
       We conclude that model fit was not tested adequately in any of the reviewed Rasch articles.
 </div>
 
-- Dichotomous answer data from 2PL model
-    * Violation: Overlapping ICCS/varying factor loadings
-    * Typical item and sample sizes as in the 7 reviewed Rasch articles
+- Dichotomous data
+    * used R package eRm
+    * Item size: 12, 24, 60, 120
+    * Sample Size: 150, 300, 500, 1000
+    * 1000 data sets per combination
+    * Code, slides, comments at [https://github.com/dostodabsi/simrasch](https://github.com/dostodabsi/simrasch)
 
+## Simulation I
+- unequal item discrimination
+- $d_i \sim \text{lognormal}(0, \sigma)$
+- $\sigma$ either .1, .3, .5
+    
+    
+## Simulation I {.vcenter}
+![res1](img/pl_plot.png)
+    
+## Simulation I
 - Result:
-    * **[FIGURE: SIMULATION RESULTS FROM 9 ITEM/SAMPLE SIZE COMBINATIONS]**
-    * Lack of power to detect overlapping ICCs.
-    * Rasch wrong model but just some random items are dismissed.
+    * Note that **we did not test the Rasch model**
+    * We assumed that it holds and threw out certain items 
+    * It is not at all clear that the Rasch model holds now
     * Item fit statistics are not model fit statistics. The model cannot be rejected, only items.
-    * **Conclusion: Model fit was not adequately tested in any of the articles.**
       
-## Itemfit: Simulation II {.smaller}
-
+## Itemfit: Simulation II
 <div class="notes">
       For a second simulation scenario, we reviewed which theoretical models of scientific thinking the researchers assumed.
       Most researchers assumed between 3 and 5 correlated facets of scientific thinking.
@@ -252,20 +278,30 @@ $INFIT_i = \frac{\sum^2_{p=1}R^2_{pi}}{\sum^2_{p=1}VAR(X_{pi})}$
       Reliability is in general estimated rather low in case unmodelled multidimensionality is present.
 </div>      
 
-- Typical theoretical model of scientific thinking in the reviewed articles
-    * Typically 3-5 correlated facets of SR assumed
-    * Simulation: 4 correlated factors (r: .3-.7). 1000 dichotomous answer matrices
-    * What do itemfit statistics tell us when we fit a unidimensional Rasch model on these data?  
+- Typical theoretical model
+    * 3-5 correlated facets of Scientific Reasoning assumed
+    * Simulated factor structure:
+    * $\left( \begin{array}{ccc}
+        1.0 & 0.6 & 0.5 & 0.4\\
+        0.6 & 1.0 & 0.7 & 0.4\\
+        0.5 & 0.7 & 1.0 & 0.3\\
+        0.4 & 0.4 & 0.3 & 1.0 \end{array} \right)$
+    * How do infit statistics respond to such data?
     
+## Simulation II {.flexbox .vcenter}
+PLOT: TODO
+
+## Simulation II
 - Result:
-    * **[FIGURE: SIMULATION RESULTS FROM 9 ITEM/SAMPLE SIZE COMBINATIONS]**  
-    * No power of itemfit statistics to detect multidimensionality
-    * Unsystematic elimination of random items
-    * Unidimensional Rasch model: Shows low reliability similar to reviewed articles (about .5-.6)
-    * **Conclusion: Simulated scenario yields results similar to reviewed articles. Might the simulated scenario reflect what is happening in the field?**
+    * item fit statistics **completely miss the point**
+    * very few items "have to be removed"
+    * Unidimensional Rasch model: Shows low reliability similar to reviewed articles (about .5 - .6)
+    
+- Conclusion:
+    * **Simulated scenario yields results similar to reviewed articles.**
+    * **Might the simulated scenario reflect what is happening in the field?**
 
-## Practices in the Field: **Interpretation** {.smaller}
-
+## Practices in the Field: **Interpretation**
 <div class="notes">
       Our simulations showed that judging the unidimensional Rasch model appropriate based on item infit statistics is an inadequate practice.
       We were interested in the conclusions that researchers draw based on this practice.
@@ -275,6 +311,8 @@ $INFIT_i = \frac{\sum^2_{p=1}R^2_{pi}}{\sum^2_{p=1}VAR(X_{pi})}$
       Still, all researchers eventually estimated a unidimensional Rasch model for reliability estimation and item infit estimation.
       Some reserachers concluded based on these practices that good model data fit is present, that their instrument is suitable for measurement and fulfills the affordances of the Rasch model, and that the instrument measures a unitary construct and a unidimensional theoretical model is supported.
       From our point of view, the conclusion it due that researchers engage in inconsistent practices that lead to tautological reasoning. Basically, they assume the Rasch model, do not test it, but eventually they conclude that it fits. In this way, the a priori assumption becomes the conclusion.
+    * "good model data fit, suitableness for measurement, fulfillment of psychometric affordances of Rasch model"
+    * "valid treatment as a single scale"
 </div>
 
 | Reference               | Theoretical models | Fitted models | Best fit | Reliability | Itemfit |
@@ -287,13 +325,15 @@ $INFIT_i = \frac{\sum^2_{p=1}R^2_{pi}}{\sum^2_{p=1}VAR(X_{pi})}$
 | Heene (2007)            | 1D                 | 1D            | na       | 1D          | 1D      |
 | Brown et al. (2010)     | 1D                 | 1D            | na       | 1D          | 1D      |
 
+## Practices in the Field: **Interpretation**
 - Conclusions in reviewed articles:
-    * "*good model data fit, suitableness for measurement, fulfillment of psychometric affordances of Rasch model, valid treatment as a single scale*"
-    * "*scale measures unitary construct, support for unidimensional theoretical model*"
-    * **Conclusion: Theoretical models, modeling practices, and theoretical conclusions are inconsistent. Researchers engage in tautological reasoning that supports their theoretical models and instrument quality.**
+    * "scale measures unitary construct, support for unidimensional theoretical model"
 
-##Discussion:
+> - Our conclusions:
+    * __Theoretical models, modeling practices, and theoretical conclusions are inconsistent.__
+    * __Researchers engage in tautological reasoning that supports their theoretical models and instrument quality.__
 
+## Discussion
 <div class="notes">
       Our findings suggest some conjecturing about the reasons why researchers engage in these practices.
       I discuss our conjectures to provide suggestions for improved future practices.
@@ -307,17 +347,18 @@ $INFIT_i = \frac{\sum^2_{p=1}R^2_{pi}}{\sum^2_{p=1}VAR(X_{pi})}$
       Finally, this approach might be the first and only one that researchers learn.
 </div>
 
-- **Conclusion: The current practices are reductionist, inadequate, inconsistent, and might be detrimental for theory development in the field of Scientific Thinking**. *Why do researchers engage in these practices?*
+- **The current practices are reductionist, inadequate, inconsistent, and might be detrimental for theory development in the field of Scientific Thinking**.
+- *Why do researchers engage in these practices?*
 
-Two traditional **perspectives on Rasch**: Utility vs. hypothesis testing (cf. Linacre, 2010).
+## Discussion
+- Two traditional **perspectives on Rasch**: Utility vs. hypothesis testing (cf. Linacre, 2010).
     
-- Researchers apply practices of the *utility school*. **Potential reasons?**
-    * Following large scale programs.
-    * Limited software availability.
-    * Lack of knowledge about Rasch foundations and model tests.
+> - Researchers apply practices of the *utility school*. **Potential reasons?**
+    * Following large scale programs
+    * Limiting software (ConQuest)
+    * Lack of knowledge about Rasch foundations and model tests
 
-##Discussion: Suggestions {.smaller}
-
+## Suggestions
 <div class="notes">
       The first suggestion that we would like to make for improved future practices is the application of global model fit testing procedures before local fit on the level of items and persons is evaluated.
       Classic tests for the Rasch model encompass the andersen test for person homogeneity and the martin l?f test for item homogeneity.
@@ -329,23 +370,26 @@ Two traditional **perspectives on Rasch**: Utility vs. hypothesis testing (cf. L
       There are various alternative parametric and nonparametric IRT models that differ in the strictness of model assumptions and provide different theoretical information.
 </div>
 
-> -  **Acknowledge the hypothesis testing perspective**
+- **Acknowledge the hypothesis testing perspective**
     * Andersen test (Andersen, 1973)
-    * Martin L?f test (Christensen et al., 2002)
+    * Martin Löf test (Christensen et al., 2002)
     * M2 statistic (Maydeu-Olivares, 2013)
     * nonparametric statistics (Koller et al., 2015)
     * posterior predictive checking (Fox, 2010; Sinharay, 2006)
     * SEM-like statistics (Maydeu-Olivares, 2014)
-    * **R** software (eRm, MIRT, ltm packages)
 
-> - **Match theoretical and statistical model**
+## Suggestions
+- **Match theoretical and statistical model**
     * IRT: Multidimensional Rasch, 2PL, mixture models (Fischer & Molenaar, 1995)
     * Nonparametric IRT: mokken scaling (van der Graaf et al., 2015)
     * Applied IRT: cognitive diagnosis models (de la Torre & Minchen, 2014)
 
+## Suggestions {.flexbox .vcenter}
 
-##Discussion: Suggestions {.smaller .flexbox .vcenter}
+![useR](img/useR.png)
 
+
+## Suggestions {.flexbox .vcenter}
 <div class="notes">
       Finally, we suggest to acknowledge the limits of psychometric models and to go down a grain size and look at scientific thinking again in its whole complexity.
       Looking at scientific thinking as a complex network of interrelated activities in the real world but also psychologically might be more fruitful for theory development than reductionist models.
@@ -353,6 +397,5 @@ Two traditional **perspectives on Rasch**: Utility vs. hypothesis testing (cf. L
 
 - **Acknowledge complexity**
     * Network models (Schmittman et al., 2013)
-    * Longitudinal and experimental designs to examine interactions between facets of ST
-    
+    * Longitudinal and experimental designs to examine interactions
 ![structure](img/structure.png)
