@@ -2,21 +2,24 @@
 % Please edit documentation in R/main.R
 \name{visualize}
 \alias{visualize}
-\title{Visualizes the % items removed given a simulation result}
+\title{Visualizes the \% items removed / Rasch rejected given a simulation result}
 \usage{
-visualize(res_sum)
+visualize(res_sum, ylab = "\% removed items", ...)
 }
 \arguments{
-\item{res_sum:}{summarized simulation result}
+\item{res_sum:}{summarized simulation result or processed LR simulation}
+
+\item{ylab:}{label of the y-axis}
+
+\item{...:}{additional arguments to xyplot}
 }
 \value{
 plots a trellis graph visualising the results
 }
 \description{
-Visualizes the % items removed given a simulation result
+Visualizes the \% items removed / Rasch rejected given a simulation result
 }
 \examples{
-spl <- summarize(sim_res)
-visualize(spl)
+visualize(res_sum)
 }
 

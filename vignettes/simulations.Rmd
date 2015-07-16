@@ -19,44 +19,53 @@ This gives an overview of the simulations we presented at [ECPA13](http://www.ec
 
 items <- c(12, 24, 60, 120) # number of items
 n <- c(150, 300, 500, 1000) # number of participants
-weights <- rbind(c(.5, 0, 0, 0), c(0, .5, 0, 0), c(0, 0, .5, 0), c(0, 0, 0, .5))
-sigma <- matrix(c(1, 0.6, 0.5, 0.4, 0.6, 1, 0.7, 0.4, 0.5, 0.7, 1, 0.3, 0.4, 0.4, 0.3, 1), 4)
-
-sigma # factor loadings for the theoretically plausible 4-dimensional model of scientific reasoning
+weights <- diag(.5, 4, 4) # item loadings on each factor
+sigma <- matrix(c(1, 0.6, 0.5, 0.4, # factor loadings
+                  0.6, 1, 0.7, 0.4, # for a theoretically plausible
+                  0.5, 0.7, 1, 0.3, # 4-dimensional model of scientific reasoning
+                  0.4, 0.4, 0.3, 1), 4)
 ```
 
 ## Simulation specification
 ```{r, eval = FALSE}
+# no violation
+sim_rasch <- sim(n, items, 1000, sim.rasch, parallel = TRUE, cores = 4)
+
 # violation of equal item discrimination
-res_2pl1 <- main_sim(n, items, 1000, sim.2pl, .1, parallel = TRUE, cores = 4)
-res_2pl3 <- main_sim(n, items, 1000, sim.2pl, .3, parallel = TRUE, cores = 4)
-res_2pl5 <- main_sim(n, items, 1000, sim.2pl, .5, parallel = TRUE, cores = 4)
+sim_2pl1 <- sim(n, items, 1000, sim.2pl, .1, parallel = TRUE, cores = 4)
+sim_2pl3 <- sim(n, items, 1000, sim.2pl, .3, parallel = TRUE, cores = 4)
+sim_2pl5 <- sim(n, items, 1000, sim.2pl, .5, parallel = TRUE, cores = 4)
+
+# assing fit of Rasch model using Andersen's LR test
+# after removing items based on infit (example call for items = 120, n = 1000)
+sim_rem <- simrem(1000, 120, 1000, sim.2pl, .5, cores = 4)
 
 # violation of unidimensionality
-res_mult <- main_sim(n, items, 1000, sim.xdim,
-                    Sigma = sigma, weights = weights, parallel = TRUE, cores = 4)
+sim_mult <- sim(n, items, 1000, sim.xdim,
+                Sigma = sigma, weights = weights, parallel = TRUE, cores = 4)
 ```
 
 ## Results
 Because running this will take considerable amounts of time, we have included the results in this package. Note that the summarise function is a convenience function that stores the results of the compute_error from the package simrasch into a data.frame. The column **pvalue** and **infit** do not actually describe p-values nor infit statistics, but are percentages about how often an item would be rejected based on the p-value or infit statistics, respectively.
-```{r}
-load('../data/sim_results.RData')
+
+```{r, message = FALSE}
+load('../data/sim_2pl1.rda')
+load('../data/sim_2pl3.rda')
+load('../data/sim_2pl5.rda')
+load('../data/sim_mult.rda')
+load('../data/sim_rasch.rda')
+load('../data/sim_removal.rda')
 ```
 
 Below we look at how the itemfit statistics (infit, standardized p-values) behave under various model misspecifications, and once when the true model is really the Rasch model.
 
 ## True model: Rasch
 ```{r}
-res_rasch <- readRDS('../data/res_rasch.RDS')
-sm_rasch <- summarize(res_rasch)
+sm_rasch <- summarize(sim_rasch)
+sm_rasch
 ```
 
 When the Rasch model is the data generating model, itemfit statistics using the cutoff of .8 and 1.2 are reasonably good in their item removal suggestions. With increasing sample size the number of items removed goes to zero. It seems that infit statistics are what is called **consistent**. In the limit, they will lead to the correct conclusion; at least when the Rasch model really is true. Standardized p-values, on the other hand, do not show this asymptotically correct behavior; p-values are inconsistent (with $\alpha$% errors).
-
-```{r, warning = FALSE, fig.width = 7, fig.height = 7}
-visualize(sm_rasch)
-```
-
 
 # I. Violation: Item discrimination
 ## Specific example
@@ -71,10 +80,7 @@ eRm::itemfit(pp)
 
 ## Simulation results
 ```{r, fig.width = 7, fig.height = 7}
-res_2pl5 <- readRDS('../data/res_2pl5.RDS')
-res_2pl3 <- readRDS('../data/res_2pl3.RDS')
-res_2pl1 <- readRDS('../data/res_2pl1.RDS')
-sm_pl <- rbind(summarize(res_2pl1), summarize(res_2pl3), summarize(res_2pl5))
+sm_pl <- rbind(summarize(sim_2pl1), summarize(sim_2pl3), summarize(sim_2pl5))
 visualize(sm_pl)
 ```
 
@@ -88,15 +94,27 @@ Notice that with $\sigma = .1$, the bias is too small and the Rasch model actual
 
 ## Further Simulations
 What happens if we remove items based on infit statistics and then assess the fit of the Rasch model. Does the Rasch model now hold? Simple simulations based on the Andersen Likelihood Ratio test show that this is not at all the case! Even after brutal removal of items, the Rasch model does not hold:
-```{r}
-#sim_removal(...)
+
+```{r, message = FALSE}
+library('dplyr')
+processed <- sim_removal %>%
+             group_by(n, items, model, violation) %>%
+             summarise(reject = mean(pvals <= .05)) %>% data.frame
+
+processed
 ```
 
+```{r, fig.width = 7, fig.height = 7}
+visualize(processed, ylab = '% rejected Rasch')
+```
 
-## Appropriate test
+We see that removing items based on infit statistics do not by itself make the data Rasch conform. In fact, in most of the cases, it isn't! When the true data generating model is the Rasch model, we only make $\alpha$ percent errors. However, when there are overlapping ICCs, even after removal of items based on infit statistics, the Rasch model simply does not hold.
+
+
+## Appropriate tests
 To test for varying item discrimination one would pit the 1PL (Rasch) against the 2PL (Birnbaum) model. We do this by using the package **mirt**.
-```{r}
-suppressMessages(library('mirt'))
+```{r, message = FALSE}
+library('mirt')
 
 mrasch <- mirt(dat, 1, itemtype = 'Rasch', verbose = FALSE)
 mbirn <- mirt(dat, 1, itemtype = '2PL', verbose = FALSE)
@@ -106,7 +124,7 @@ anova(mrasch, mbirn)
 
 We find that the 2PL model fits substantially better than the 1PL model.
 
-Until now, not much is gained. It is rather obvious that for assessing slope-invariant ICCs  one should test the 1PL against the 2PL model. The 2PL model does not have such nice psychometric properties as the Rasch model. For example, the sum score is no longer a sufficient statistic for a person's ability. Additionally, specific objectivity does not hold; i.e. it is now relevant on which item two persons are compared. It is therefore quite understandable and reasonable to revise (or throw out) items that cause the 1PL model to fail. In applied settings, specific objectivity and the sum score being a sufficient statistic are of great importance.
+Until now, not much is gained. It is rather obvious that for assessing slope-invariant ICCs  one should test the 1PL against the 2PL model. The 2PL model does not have such nice psychometric properties as the Rasch model. For example, the sum score is no longer a sufficient statistic for a person's ability. Additionally, specific objectivity does not hold; i.e. it is now relevant on which item two persons are compared. It is therefore quite understandable and reasonable to revise (or throw out) items that cause the 1PL model to fail. In applied settings, specific objectivity and the sum score being a sufficient statistic might be of great importance.
 
 However, coming back to the analogy of the "two schools" of Rasch modeling, researchers need to be aware in which one they are currently attending. Simply throwing out items due to low or high infit is no good. These items might be of theoretical importance, tapping vital parts of the construct scientific reasoning.
 
@@ -116,7 +134,6 @@ Leaving varying item discriminability behind, a more important issue emerges; th
 - understanding theories
 - designing experiments
 - interpreting data
-
 
 
 # II. Violation: Unidimensionality
@@ -140,14 +157,12 @@ When fitting a unidimensional Rasch model to the 4-dimensional data, and inspect
 
 ## Simulation results
 ```{r}
-res_mult <- readRDS('../data/res_mult_n1000_i60_i120.RDS')
-summarize(res_mult)
+sm_mult <- summarize(sim_mult)
 ```
 
-```{r}
-# plot: TODO
+```{r, warning = FALSE, fig.width = 7, fig.height = 7}
+visualize(sm_mult, ylim = c(0, .5))
 ```
-
 
 The Martin Loef test is sometimes called a test for unidimensionality. If the Rasch model is true, then all items should measure the same latent variable. Using the knowledge about which items belong to which subscale of scientific reasoning, we can split the items accordingly, and feed this into a Martin Loef test:
 
@@ -158,11 +173,12 @@ MLoef(mrasch, rep(1:4, times = items / 4))
 The classical Martin Loef test is not sensitive enough. Thus we rely on an 'exact' version as suggested by Koller et al. (2015).
 
 ```{r, eval = FALSE}
-res <- NPtest(dat, n = 500, method = 'MLoef', splitcr = rep(1:4, items / 4)) # takes over one hour to run
+# takes over one hour to run
+res <- NPtest(dat, n = 500, method = 'MLoef', splitcr = rep(1:4, items / 4)) 
 ```
 
 ```{r}
-readRDS('NP_res.RDS')
+readRDS('NP_res.RDS') # load the results from disk
 ```
 
 We would reject the unidimensional Rasch model based on the exact p-value. In conclusion, although infit statistics would have us believe that nothing is wrong with our unidimentional Rasch model - to be clear, infit doesn't actually test this; it looks at the items individually - a theoretically motivated, bootstrapped Martin Loef test clearly indicates model misfit.
@@ -175,30 +191,21 @@ model <- 'f1=1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57
           f2=2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58
           f3=3, 7, 11, 15, 19, 23, 27, 31, 35, 39, 43, 47, 51, 55, 59
           f4=4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60
-          cov=f1*f2*f3*f4' # how exactly should one sp
+          cov=f1*f2*f3*f4'
 
 fitm <- mirt(dat, 1, itemtype = 'Rasch', verbose = FALSE)
 #fit2pl <- mirt(dat, 4, itemtype = '2PL')
 ```
 
 # Miscellaneous Problems
-The reliability of the pseudo one-dimension is:
+The reliability of the pseudo one-dimension is
 ```{r}
 fscores(fitm, returnER = TRUE)
 ```
 
-whereas each subscale (all items that load on exactly one factor) is lower:
-```{r}
-f1 <- seq(1, 60, 4)
-f2 <- seq(2, 60, 4)
-fit_factor1 <- mirt(dat[, f1], 1, temtype = 'Rasch', verbose = FALSE)
-fit_factor2 <- mirt(dat[, f2], 1, temtype = 'Rasch', verbose = FALSE)
+and is rather low. It is known that when fitting a unidimensional model to multidimensional data that the reliability is low. Most instruments in the literature on scientific thinking show similar low reliability (.5 - .6). Might this represent what is actually happening in the field?
 
-fscores(fit_factor1, returnER = TRUE)
-fscores(fit_factor2, returnER = TRUE)
-```
-
-But these factors measure something distinct! By aggregating over the factors we actually loose information, e.g. in terms of criterion validity. If high score on scientific thinking predict say university grades, which facet of scientific thinking is the driving force?
+Additionally, by aggregating over different subsets, we loose information, e.g. in terms of criterion validity. If high score on scientific thinking predict say university grades, which facet of scientific thinking is the driving force?
  
 
 # Conclusion
@@ -209,4 +216,17 @@ However, for theory development, solely relying on item infit is detrimental. Th
 We have shown that infit statistics cannot detect multidimensionality. Researchers need to extend their repertoire of tests.
 
 # Suggestions
-The Rasch model needs strong theory, and needs to be battle tested. As a case in point, researchers do not usually assess differential item functioning. For example, it seems perfectly reasonable that children in different school classes would solve items differently, which would violate a central assumption of the Rasch model. An easy test would be the Andersen's Likelihood ratio test, splitting groups according to class. Koller et al. (2015) also implemented non-parametric versions thereof which are more appropriate when sample size is small.
+The Rasch model needs strong theory, and needs to be battle tested. As a case in point, researchers do not usually assess differential item functioning. For example, it seems perfectly reasonable that children in different school classes would solve items differently, which would violate a central assumption of the Rasch model. An easy test would be the Andersen's Likelihood ratio test, splitting groups according to class; or even better, recursive partitioning (Strobl et al., 2013). Koller et al. (2015) also implemented non-parametric versions thereof which are more appropriate when sample size is small.
+
+There is a repertoire of tests, already implemented in R. We suggest that researchers take a look:
+<ul>
+  <li>Andersen test (Andersen, 1973) **[eRm]**</li>
+  <li>Martin Löf test (Christensen et al., 2002) **[eRm]**</li>
+  <li>Recursive Partitioning (Strobl et al., 2013) **[psychotree]**</li>
+  <li>M2 statistic (Maydeu-Olivares, 2013) **[mirt]**</li>
+  <li>Nonparametric statistics (Koller et al., 2015) **[eRm]**</li>
+  <li>Bayesian posterior predictive checking (Fox, 2010; Sinharay, 2006)</li>
+  <li>SEM-like statistics (Maydeu-Olivares, 2014) **[mirt]**</li>
+</ul>
+
+

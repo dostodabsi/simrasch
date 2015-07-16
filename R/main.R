@@ -71,13 +71,13 @@ get_itemfit <- function(n, items, times, parallel, model_sim, ...) {
 #' @return returns an object of class 'sim_res'
 #' which is an array that stores #times #items x 3 matrices
 #' @examples
-#' sim_removal(100, 20, sim.2pl, .4)
-sim_removal <- function(n, items, times, model_sim, ...,
-                        cores = detectCores(), cutoff = c(.8, 1.2)) {
+#' simrem(100, 20, sim.2pl, .4)
+simrem <- function(n, items, times, model_sim, ...,
+                   cores = 3, cutoff = c(.8, 1.2)) {
 
   cat('running in parallel\n') # always >:)
   registerDoParallel(cores = cores)
-  
+
   low <- cutoff[1]
   high <- cutoff[2]
   pvals <- foreach(k = 1:times) %dopar% {
@@ -110,9 +110,9 @@ sim_removal <- function(n, items, times, model_sim, ...,
 #' @return returns a list that stores objects of class 'sim_res'
 #' each array stores #times simulations of each possible n x items combination
 #' @examples
-#' main_sim(c(100, 400), c(10, 50), 1000, sim.2pl, .5, parallel = TRUE, cores = 3)
-main_sim <- function(n, items, times, model_sim, ..., Sigma = NULL,
-                     weights = NULL, parallel = TRUE, cores = detectCores()) {
+#' sim(c(100, 400), c(10, 50), 1000, sim.2pl, .5, parallel = TRUE, cores = 3)
+sim <- function(n, items, times, model_sim, ..., Sigma = NULL,
+                weights = NULL, parallel = TRUE, cores = detectCores()) {
   if (parallel) {
     cat('running in parallel\n')
     registerDoParallel(cores = cores) # for parallel execution
@@ -136,7 +136,6 @@ main_sim <- function(n, items, times, model_sim, ..., Sigma = NULL,
                       parallel = parallel, model_sim, ...)
       }
 
-
       cat('done\n')
       g <- g + 1
     }
@@ -145,6 +144,7 @@ main_sim <- function(n, items, times, model_sim, ..., Sigma = NULL,
                             as.character(substitute(...)))
   res
 }
+
 
 #' Compute the items suggested to be removed / revised based on item infit
 #'
@@ -196,7 +196,8 @@ compute_errors <- function(sim_res, cutoff = c(.8, 1.2)) {
 
 #' Store the results of the compute_err function in a data.frame
 #'
-#' @param err_res: compute_error result
+#' @param sim_res: result of the simulation (list of arrays)
+#' @param cutoff: cutoff used for infit statistics (commonly .8 - 1.2)
 #' @return returns a data.frame with four columns: the number of participants (n),
 #' the number of items (items), and the percent (!) that pvalues and infit
 #' statistics respectively would reject an item. Thus note that the column
@@ -216,31 +217,36 @@ summarize <- function(sim_res, cutoff = c(.8, 1.2)) {
   df <- data.frame(t(sapply(err_res, pick)))
   df <- data.frame(apply(df, 2, unlist))
   df$infit <- as.numeric(as.character(df$infit))
+  if (all(is.na(df$violation))) {
+    df$violation <- ifelse(df$simtype == 'sim.rasch', 'rasch', 'mult')
+  }
   df
 }
 
 
-#' Visualizes the % items removed given a simulation result
+#' Visualizes the \% items removed / Rasch rejected given a simulation result
 #'
-#' @param res_sum: summarized simulation result
+#' @param res_sum: summarized simulation result or processed LR simulation
+#' @param ylab: label of the y-axis
+#' @param ...: additional arguments to xyplot
 #' @return plots a trellis graph visualising the results
 #' @examples
-#' spl <- summarize(sim_res)
-#' visualize(spl)
-visualize <- function(res_sum) {
+#' visualize(res_sum)
+visualize <- function(res_sum, ylab = '% removed items', ...) {
   if (all(is.na(res_sum$violation))) res_sum$violation <- 'none'
-  xyplot(infit ~ items | n, groups = violation, data = res_sum,
+  if ('infit' %in% names(res_sum)) res_sum$reject <- res_sum$infit
+
+  xyplot(reject ~ items | n, groups = violation, data = res_sum,
          type = c('p', 'g'),
          xlab = list(label = 'item size', cex = 2),
-         ylab = list(label = '% removed items', cex = 2),
+         ylab = list(label = ylab, cex = 2),
          auto.key = list(columns = 2, cex = 2),
          par.settings = simpleTheme(pch = 21, cex = 2),
          par.strip.text = list(cex = 1.8),
          axis.text = list(cex = 2),
          scales = list(cex = 1.6),
-
          panel = function(...) {
            panel.abline(h = .05, lty = 'dotted', col = 'black', lwd = 2)
            panel.xyplot(...)
-         })
+       }, ...)
 }

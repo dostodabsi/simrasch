@@ -28,7 +28,7 @@ vignette: >
       </div>
 -->
 
-## Scientific Thinking {.flexbox .vcenter }
+## Scientific Thinking in Children {.flexbox .vcenter }
 <div class="notes">
       Scientific thinking entails various psychological processes that are needed for intentional knowledge seeking and the coordination of theory and evidence, which lie at the heart of the scientific process.
       [BULLET 1]For example, to find out whether researchers in scientific thinking can adequately use the Rasch model, a research question and hypotheses have to be formulated, a controlled experimental design has to be developed and conducted, data have to be interpreted and conclusions drawn.
@@ -73,7 +73,7 @@ vignette: >
 
 $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
 
-1 person parameter, 1 item parameter
+person ability $\theta_p$, item difficulty $\sigma_i$
 
 ![image](img/properties_1.png)
 
@@ -88,7 +88,7 @@ $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
 
 $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
 
-1 person parameter, 1 item parameter
+person ability $\theta_p$, item difficulty $\sigma_i$
 
 ![image](img/properties_2.png)
 
@@ -115,7 +115,7 @@ If the answers on an instrument are in accordance with the Rasch model, various 
 
 $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
 
-1 person parameter, 1 item parameter
+person ability $\theta_p$, item difficulty $\sigma_i$
 
 ![image](img/properties_2_details.png)
 
@@ -130,7 +130,7 @@ $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
 
 $p(x_{pi})=\frac{exp(x_{pi}(\theta_p-\sigma_i))}{{1+exp(\theta_p-\sigma_i)}}$
 
-1 person parameter, 1 item parameter
+person ability $\theta_p$, item difficulty $\sigma_i$
 
 ![image](img/properties_3.png)
 
@@ -261,8 +261,11 @@ $$
     * Note that **we did not test the Rasch model**
     * We assumed that it holds and threw out certain items 
     * It is not at all clear that the Rasch model holds now
-    * Item fit statistics are not model fit statistics. The model cannot be rejected, only items.
-      
+    * In fact, it does not!
+    
+## 
+![res2](img/LR_plot.png)
+
 ## Itemfit: Simulation II
 <div class="notes">
       For a second simulation scenario, we reviewed which theoretical models of scientific thinking the researchers assumed.
@@ -289,7 +292,7 @@ $$
     * How do infit statistics respond to such data?
     
 ## Simulation II {.flexbox .vcenter}
-PLOT: TODO
+![mult](img/mult_plot.png)
 
 ## Simulation II
 - Result:
@@ -331,7 +334,7 @@ PLOT: TODO
 
 > - Our conclusions:
     * __Theoretical models, modeling practices, and theoretical conclusions are inconsistent.__
-    * __Researchers engage in tautological reasoning that supports their theoretical models and instrument quality.__
+    * __Researchers engage in tautological and reductionist reasoning that supports their theoretical models and instrument quality.__
 
 ## Discussion
 <div class="notes">
@@ -345,12 +348,10 @@ PLOT: TODO
       We think that researchers might follow this approach because it is used in the international large scale programs such as PISA.
       They use the ConQuest software that is used for example in PISA and that does not allow extensive global model fit testing.
       Finally, this approach might be the first and only one that researchers learn.
-</div>
-
 - **The current practices are reductionist, inadequate, inconsistent, and might be detrimental for theory development in the field of Scientific Thinking**.
 - *Why do researchers engage in these practices?*
+</div>
 
-## Discussion
 - Two traditional **perspectives on Rasch**: Utility vs. hypothesis testing (cf. Linacre, 2010).
     
 > - Researchers apply practices of the *utility school*. **Potential reasons?**
@@ -371,21 +372,21 @@ PLOT: TODO
 </div>
 
 - **Acknowledge the hypothesis testing perspective**
-    * Andersen test (Andersen, 1973)
-    * Martin Löf test (Christensen et al., 2002)
+    * Andersen test (Andersen, 1973) 
+    * Martin Löf test (Christensen et al., 2002) 
+    * Recursive Partitioning (Strobl et al., 2013) 
     * M2 statistic (Maydeu-Olivares, 2013)
     * nonparametric statistics (Koller et al., 2015)
     * posterior predictive checking (Fox, 2010; Sinharay, 2006)
-    * SEM-like statistics (Maydeu-Olivares, 2014)
+    * SEM-like statistics (Maydeu-Olivares, 2014) 
 
 ## Suggestions
-- **Match theoretical and statistical model**
+- **Match theoretical and statistical models**
     * IRT: Multidimensional Rasch, 2PL, mixture models (Fischer & Molenaar, 1995)
     * Nonparametric IRT: mokken scaling (van der Graaf et al., 2015)
     * Applied IRT: cognitive diagnosis models (de la Torre & Minchen, 2014)
 
 ## Suggestions {.flexbox .vcenter}
-
 ![useR](img/useR.png)
 
 

@@ -7,7 +7,9 @@
 summarize(sim_res, cutoff = c(0.8, 1.2))
 }
 \arguments{
-\item{err_res:}{compute_error result}
+\item{sim_res:}{result of the simulation (list of arrays)}
+
+\item{cutoff:}{cutoff used for infit statistics (commonly .8 - 1.2)}
 }
 \value{
 returns a data.frame with four columns: the number of participants (n),
