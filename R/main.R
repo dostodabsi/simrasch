@@ -217,6 +217,7 @@ summarize <- function(sim_res, cutoff = c(.8, 1.2)) {
   df <- data.frame(t(sapply(err_res, pick)))
   df <- data.frame(apply(df, 2, unlist))
   df$infit <- as.numeric(as.character(df$infit))
+  df$items <- factor(df$items, sort(as.numeric(levels(df$items))))
   if (all(is.na(df$violation))) {
     df$violation <- ifelse(df$simtype == 'sim.rasch', 'rasch', 'mult')
   }
