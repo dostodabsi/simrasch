@@ -11,7 +11,16 @@ vignette: >
 
 
 ## Vignette Info
-This gives an overview of the simulations we presented at [ECPA13](http://www.ecpa13.com/). They demonstrate that itemfit statistics should not be relied on uniformly as they currently are in the literature of scientific thinking. The simulated data is included in this package, since running the simulations from scratch takes some time. However, for clarity we have also included the calls made to produce the simulations (in comments).
+This gives an overview of the simulations we presented at [ECPA13](http://www.ecpa13.com/). In our talk (see the respective vignette), we reviewed the practices of Rasch modeling in the literature on scientific thinking. We found that researchers most strongly rely on item infit statistics to assess the fit of the Rasch model. These infit statistics have been criticised for quite some time now (see for example Kreiner & Christensen, 2013). They assess the fit on an item-level, assuming that the Rasch model holds globally - which never is tested in the literature. In these simulations below we tried to build up the intuition that this is a fundamentally unsound practice.
+
+First, we looked at how infit statistics behave when the Rasch model is true. It turns out that, contrary to the statistically inconsistent p-values, with increasing sample and item size no items would be removed.
+
+Second, we looked at how they behave when equal item discrimination is violated. We found that one would remove a few items (as is common practice in the literature). Crucially, using this reasoning, one would never reject the Rasch model, only items. Tautologically, researchers then conclude that, based on the fit of the Rasch model, scientific thinking is a unidimensional construct. Let's just give them the benefit of the doubt and assume that assessing the fit of the Rasch model using infit statistics is sound (it is not). Does the Rasch model hold after removing them? Using a simple Andersen's Likelihood Ratio test splitted at the median group ability, we found that this is not at all the case! In most of the cases, the Rasch model would be rejected.
+
+In the third simulation, we looked at theoretical models that researchers have about scientific thinking. Most of the time, scientific thinking is assumed to be three two five dimensional, so we simulated from a correlated four dimensional factor structure. How do item infit statistics respond to such a crucial violation of the Rasch model? Not at all! Actually, not a single item (based on the common cutoff .8 - 1.2) would be removed.
+
+In conclusion, we found that current practices are unsound, incoherent, and reductionist. We suggest a suite of tests researchers might employ to adequately assess the fit of the Rasch model. We further suggest that researchers match their theoretical models with their statistical ones. Importantly, we conjecture that solely relying on the proprietory software ConQuest (all research groups used this software to fit and "test" their models) limits the statistical possibilities and narraws theoretical thinking. We suggest using the free, open-source statistical software R, in which all of the tests mentioned in the last section are implemented.
+
 
 ## Simulation Parameters
 ```{r}
@@ -152,7 +161,7 @@ pp <- person.parameter(mrasch)
 eRm::itemfit(pp)
 ```
 
-When fitting a unidimensional Rasch model to the 4-dimensional data, and inspecting the infit statistics, one finds that they look reasonable; we would not exlude any items. The researcher might be quite happy about this. However, in terms of theory, we are making a grave mistake. We assume that we have a unidimensional construct, when in fact it is four-dimensional! Infit statistics **completely miss the point here**.
+When fitting a unidimensional Rasch model to the 4-dimensional data, and inspecting the infit statistics, one finds that they look reasonable; we would not exlude any items. The researcher might be quite happy about this. However, in terms of theory, we are making a grave mistake. We assume that we have a unidimensional construct, when in fact it is four-dimensional! Infit statistics **completely miss the point**.
 
 
 ## Simulation results
@@ -228,5 +237,4 @@ There is a repertoire of tests, already implemented in R. We suggest that resear
   <li>Bayesian posterior predictive checking (Fox, 2010; Sinharay, 2006)</li>
   <li>SEM-like statistics (Maydeu-Olivares, 2014) **[mirt]**</li>
 </ul>
-
 

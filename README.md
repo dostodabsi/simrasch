@@ -1,4 +1,4 @@
-# Item fit statistics in Rasch models
+# Reductionism in Rasch Modeling
 This R package is associated with a talk given at [ECPA13](http://www.ecpa13.com/) by Peter Edelsbrunner and Fabian Dablander. Idea and major theoretical work was done by Peter Edelsbrunner. For questions about the code, please email me.
 
 ```{r}
