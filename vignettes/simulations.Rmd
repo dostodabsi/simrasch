@@ -19,7 +19,7 @@ Second, we looked at how they behave when equal item discrimination is violated.
 
 In the third simulation, we looked at theoretical models that researchers have about scientific thinking. Most of the time, scientific thinking is assumed to be three two five dimensional, so we simulated from a correlated four dimensional factor structure. How do item infit statistics respond to such a crucial violation of the Rasch model? Not at all! Actually, not a single item (based on the common cutoff .8 - 1.2) would be removed.
 
-In conclusion, we found that current practices are unsound, incoherent, and reductionist. We suggest a suite of tests researchers might employ to adequately assess the fit of the Rasch model. We further suggest that researchers match their theoretical models with their statistical ones. Importantly, we conjecture that solely relying on the proprietory software ConQuest (all research groups used this software to fit and "test" their models) limits the statistical possibilities and narraws theoretical thinking. We suggest using the free, open-source statistical software R, in which all of the tests mentioned in the last section are implemented.
+In conclusion, we found that current practices are unsound, incoherent, and reductionist. We suggest a suite of tests researchers might employ to adequately assess the fit of the Rasch model. We further suggest that researchers match their theoretical models with their statistical ones. Importantly, we conjecture that solely relying on the proprietory software ConQuest (all research groups used this software to fit and "test" their models) limits the statistical possibilities and narrows theoretical thinking. We suggest using the free, open-source statistical software R, in which all of the tests mentioned in the last section are implemented.
 
 
 ## Simulation Parameters
@@ -74,6 +74,13 @@ sm_rasch <- summarize(sim_rasch)
 sm_rasch
 ```
 
+```{r, fig.width = 7, fig.height = 7, warning = FALSE}
+processed <- data.frame(violation = rep(c('pval', 'infit'), each = nrow(sm_rasch)),
+                        reject = c(sm_rasch$pval, sm_rasch$infit), n = rep(sm_rasch$n, 2),
+                        items = rep(sm_rasch$items, 2))
+visualize(processed, ylim = c(0, .3))
+```
+
 When the Rasch model is the data generating model, itemfit statistics using the cutoff of .8 and 1.2 are reasonably good in their item removal suggestions. With increasing sample size the number of items removed goes to zero. It seems that infit statistics are what is called **consistent**. In the limit, they will lead to the correct conclusion; at least when the Rasch model really is true. Standardized p-values, on the other hand, do not show this asymptotically correct behavior; p-values are inconsistent (with $\alpha$% errors).
 
 # I. Violation: Item discrimination
@@ -90,7 +97,7 @@ eRm::itemfit(pp)
 ## Simulation results
 ```{r, fig.width = 7, fig.height = 7}
 sm_pl <- rbind(summarize(sim_2pl1), summarize(sim_2pl3), summarize(sim_2pl5))
-visualize(sm_pl)
+visualize(sm_pl, ylim  = c(0, .3))
 ```
 
 In this simulation, the item discriminations are drawn from a lognormal distribution with $\mu = 0$ and $\sigma = x$, where in our simulations x was either .1, .3, or .5.
@@ -170,7 +177,7 @@ sm_mult <- summarize(sim_mult)
 ```
 
 ```{r, warning = FALSE, fig.width = 7, fig.height = 7}
-visualize(sm_mult, ylim = c(0, .5))
+visualize(sm_mult, ylim = c(0, .3))
 ```
 
 The Martin Loef test is sometimes called a test for unidimensionality. If the Rasch model is true, then all items should measure the same latent variable. Using the knowledge about which items belong to which subscale of scientific reasoning, we can split the items accordingly, and feed this into a Martin Loef test:
@@ -206,7 +213,7 @@ fitm <- mirt(dat, 1, itemtype = 'Rasch', verbose = FALSE)
 #fit2pl <- mirt(dat, 4, itemtype = '2PL')
 ```
 
-# Miscellaneous Problems
+## Reliability
 The reliability of the pseudo one-dimension is
 ```{r}
 fscores(fitm, returnER = TRUE)

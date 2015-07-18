@@ -208,16 +208,19 @@ compute_errors <- function(sim_res, cutoff = c(.8, 1.2)) {
 #' summarize(err_res)
 summarize <- function(sim_res, cutoff = c(.8, 1.2)) {
   err_res <- compute_errors(sim_res, cutoff = cutoff)
-  pick <- function(sim) list('sims' = length(sim$rm_items),
-                             'n' = sim$n, 'items' = sim$nr_items,
-                             'pval' = round(sim$pval, 3),
-                             'infit' = round(sim$rm_percent, 3),
-                             'simtype' = attr(sim_res, 'simtype')[1],
-                             'violation' = attr(sim_res, 'simtype')[2])
-  df <- data.frame(t(sapply(err_res, pick)))
-  df <- data.frame(apply(df, 2, unlist))
-  df$infit <- as.numeric(as.character(df$infit))
-  df$items <- factor(df$items, sort(as.numeric(levels(df$items))))
+  pick <- function(sim) c('sims' = length(sim$rm_items),
+                           'n' = sim$n, 'items' = sim$nr_items,
+                           'pval' = round(sim$pval, 3),
+                           'infit' = round(sim$rm_percent, 3),
+                           'simtype' = attr(sim_res, 'simtype')[1],
+                           'violation' = attr(sim_res, 'simtype')[2])
+
+  df <- data.frame(t(sapply(err_res, pick)), stringsAsFactors = FALSE)
+  df$infit <- as.numeric(df$infit)
+  df$pval <- as.numeric(df$pval)
+  df$n <- factor(df$n, sort(as.numeric(unique(df$n))))
+  df$items <- factor(df$items, sort(as.numeric(unique(df$items))))
+
   if (all(is.na(df$violation))) {
     df$violation <- ifelse(df$simtype == 'sim.rasch', 'rasch', 'mult')
   }
@@ -241,11 +244,11 @@ visualize <- function(res_sum, ylab = '% removed items', ...) {
          type = c('p', 'g'),
          xlab = list(label = 'item size', cex = 2),
          ylab = list(label = ylab, cex = 2),
-         auto.key = list(columns = 2, cex = 2),
+         auto.key = list(columns = 3, cex = 2),
          par.settings = simpleTheme(pch = 21, cex = 2),
          par.strip.text = list(cex = 1.8),
          axis.text = list(cex = 2),
-         scales = list(cex = 1.6),
+         scales = list(cex = 1.2),
          panel = function(...) {
            panel.abline(h = .05, lty = 'dotted', col = 'black', lwd = 2)
            panel.xyplot(...)
