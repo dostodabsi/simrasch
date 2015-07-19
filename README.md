@@ -11,3 +11,11 @@ library('simrasch')
 vignette('simulations') # for discussion of simulation results
 vignette('talk') # for the presentation given at ECPA13
 ```
+
+If you cannot see the slides upon calling the respective vignette, simply clone this repository:
+
+```{r}
+git clone https://github.com/dostodabsi/simrasch
+```
+
+or download the repo manually using the button on the right side of the webpage. In the folder **inst/doc** you will find a webpage called **talk.html**. Simply open it with your browser and you can view the presentation.

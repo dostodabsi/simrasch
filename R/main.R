@@ -227,7 +227,7 @@ visualize <- function(res_sum, ylab = '% removed items', ...) {
                   axis.text = list(cex = 2),
                   scales = list(cex = 1.2),
                   panel = function(...) {
-                    panel.abline(h = .05, lty = 'dotted', col = 'black', lwd = 2)
-                    panel.xyplot(...)
+                    lattice::panel.abline(h = .05, lty = 'dotted', col = 'black', lwd = 2)
+                    lattice::panel.xyplot(...)
                 }, ...)
 }
