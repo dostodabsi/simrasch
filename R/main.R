@@ -222,7 +222,7 @@ visualize <- function(res_sum, ylab = '% removed items', ...) {
                   xlab = list(label = 'item size', cex = 2),
                   ylab = list(label = ylab, cex = 2),
                   auto.key = list(columns = 3, cex = 2),
-                  par.settings = simpleTheme(pch = 21, cex = 2),
+                  par.settings = lattice::simpleTheme(pch = 21, cex = 2),
                   par.strip.text = list(cex = 1.8),
                   axis.text = list(cex = 2),
                   scales = list(cex = 1.2),
