@@ -1,10 +1,10 @@
 Package: simrasch
-Title: Implements functions to simulate performance of item statistics of Rasch; complementary package to a talk given at ECPA13
-Version: 0.0.1
+Title: Implements functions to simulate performance of item infit statistics used in Rasch modeling
+Version: 1.0
 Authors@R: c(
   person("Fabian", "Dablander", email = "dostodabsi@gmail.com", role = c("aut", "cre")),
   person("Peter", "Edelsbrunner", email = "peter.edelsbrunner@ifv.gess.ethz.ch", role = c("aut")))
-Description: Implements functions to simulate performance of item statistics of Rasch
+Description: Accompanying R package to a talk given at ECPA13. Implements simulations scrutinizing item infit statistics in Rasch modeling. Also includes presentation slides.
 Depends: R (>= 3.2.1)
 License: MIT
 LazyData: true

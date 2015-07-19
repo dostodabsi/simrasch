@@ -24,7 +24,7 @@ In conclusion, we found that current practices are unsound, incoherent, and redu
 
 ## Simulation Parameters
 ```{r}
-#library('simrasch')
+library('simrasch')
 
 items <- c(12, 24, 60, 120) # number of items
 n <- c(150, 300, 500, 1000) # number of participants
@@ -58,12 +58,7 @@ sim_mult <- sim(n, items, 1000, sim.xdim,
 Because running this will take considerable amounts of time, we have included the results in this package. Note that the summarise function is a convenience function that stores the results of the compute_err from the package simrasch into a data.frame. The column **pvalue** and **infit** do not actually describe p-values nor infit statistics, but are percentages about how often an item would be rejected based on the p-value or infit statistics, respectively.
 
 ```{r, message = FALSE}
-load('../data/sim_2pl1.rda')
-load('../data/sim_2pl3.rda')
-load('../data/sim_2pl5.rda')
-load('../data/sim_mult.rda')
-load('../data/sim_rasch.rda')
-load('../data/sim_removal.rda')
+data(sim_2pl1, sim_2pl3, sim_2pl5, sim_rasch, sim_mult, sim_removal)
 ```
 
 Below we look at how the itemfit statistics (infit, standardized p-values) behave under various model misspecifications, and once when the true model is really the Rasch model.
@@ -173,7 +168,7 @@ When fitting a unidimensional Rasch model to the 4-dimensional data, and inspect
 
 ## Simulation results
 ```{r}
-sm_mult <- summarize(sim_mult)
+sm_mult <- simrasch::summarize(sim_mult)
 ```
 
 ```{r, warning = FALSE, fig.width = 7, fig.height = 7}

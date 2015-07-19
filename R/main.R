@@ -15,7 +15,7 @@ library('doParallel')
 #' estimate(400, 30, sim.2pl, .5)
 estimate <- function(n, items, model_sim, ...) {
   tryCatch({
-    RM(model_sim(n, items, ...))
+    eRm::RM(model_sim(n, items, ...))
   }, warning = function(e) {
     estimate(n, items, model_sim, ...)
   }, error = function(e) {
@@ -35,9 +35,9 @@ estimate <- function(n, items, model_sim, ...) {
 get_itemfit <- function(n, items, times, parallel, model_sim, ...) {
 
   if (parallel) {
-    sim_res <- foreach(i = 1:times) %dopar% {
+    sim_res <- doParallel::foreach(i = 1:times) %dopar% {
       rasch <- estimate(n, items, model_sim, ...)
-      fits <- itemfit(person.parameter(rasch))
+      fits <- eRm::itemfit(eRm::person.parameter(rasch))
       cbind(fits$i.infitMSQ, fits$i.outfitMSQ,
             round(1 - pchisq(fits$i.fit, fits$i.df - 2), 3))
     }
@@ -46,7 +46,7 @@ get_itemfit <- function(n, items, times, parallel, model_sim, ...) {
     sim_res <- array(NA, dim = c(items, 3, times))
     for (i in 1:times) {
       rasch <- estimate(n, items, model_sim, ...)
-      fits <- itemfit(person.parameter(rasch))
+      fits <- eRm::itemfit(eRm::person.parameter(rasch))
       sim_res[, , i] <- cbind(fits$i.infitMSQ, fits$i.outfitMSQ,
                               round(1 - pchisq(fits$i.fit, fits$i.df - 1), 3))
     }
@@ -76,22 +76,22 @@ simrem <- function(n, items, times, model_sim, ...,
                    cores = 3, cutoff = c(.8, 1.2)) {
 
   cat('running in parallel\n') # always >:)
-  registerDoParallel(cores = cores)
+  doParallel::registerDoParallel(cores = cores)
 
   low <- cutoff[1]
   high <- cutoff[2]
   pvals <- foreach(k = 1:times) %dopar% {
     fitted <- estimate(n, items, model_sim, ...)
-    pp <- person.parameter(fitted)
-    infit <- unname(itemfit(pp)$i.infitMSQ)
+    pp <- eRm::person.parameter(fitted)
+    infit <- unname(eRm::itemfit(pp)$i.infitMSQ)
     remove <- which(infit < low | infit > high)
     if (length(remove) != 0) {
       reducedX <- fitted$X[, -remove]
-      refitted <- RM(reducedX)
+      refitted <- eRm::RM(reducedX)
     } else {
       refitted <- fitted
     }
-    LRtest(refitted)$pvalue
+    eRm::LRtest(refitted)$pvalue
   }
   unlist(pvals)
 }
@@ -115,7 +115,7 @@ sim <- function(n, items, times, model_sim, ..., Sigma = NULL,
                 weights = NULL, parallel = TRUE, cores = detectCores()) {
   if (parallel) {
     cat('running in parallel\n')
-    registerDoParallel(cores = cores) # for parallel execution
+    doParallel::registerDoParallel(cores = cores) # for parallel execution
   }
 
   g <- 1
@@ -130,10 +130,10 @@ sim <- function(n, items, times, model_sim, ..., Sigma = NULL,
         factors <- ncol(Sigma)
         wmat <- apply(replicate(items[j] / factors, weights), 2, rbind)
         res[[g]] <- get_itemfit(n[i], items[j], times,
-                      parallel = parallel, sim.xdim, Sigma, wmat)
+                      parallel = parallel, eRm::sim.xdim, Sigma, wmat)
       } else {
         res[[g]] <- get_itemfit(n[i], items[j], times,
-                      parallel = parallel, model_sim, ...)
+                      parallel = parallel, eRm::model_sim, ...)
       }
 
       cat('done\n')
@@ -155,10 +155,10 @@ sim <- function(n, items, times, model_sim, ..., Sigma = NULL,
 #' @examples
 #' compute_err(sim_res)
 compute_err <- function(sim_res, cutoff = c(.8, 1.2)) {
-  
+
   pval_fn <- function(pvals) sum(pvals <= .05)
   infit_fn <- function(fit) sum(fit < cutoff[1] | fit > cutoff[2])
-  
+
   lapply(sim_res, function(arr) {
     nr_items <- attr(arr, 'nitems')
     normalizer <- nr_items * dim(arr)[3]
@@ -217,17 +217,17 @@ visualize <- function(res_sum, ylab = '% removed items', ...) {
   if (all(is.na(res_sum$violation))) res_sum$violation <- 'none'
   if ('infit' %in% names(res_sum)) res_sum$reject <- res_sum$infit
 
-  xyplot(reject ~ items | n, groups = violation, data = res_sum,
-         type = c('p', 'g'),
-         xlab = list(label = 'item size', cex = 2),
-         ylab = list(label = ylab, cex = 2),
-         auto.key = list(columns = 3, cex = 2),
-         par.settings = simpleTheme(pch = 21, cex = 2),
-         par.strip.text = list(cex = 1.8),
-         axis.text = list(cex = 2),
-         scales = list(cex = 1.2),
-         panel = function(...) {
-           panel.abline(h = .05, lty = 'dotted', col = 'black', lwd = 2)
-           panel.xyplot(...)
-       }, ...)
+  lattice::xyplot(reject ~ items | n, groups = violation, data = res_sum,
+                  type = c('p', 'g'),
+                  xlab = list(label = 'item size', cex = 2),
+                  ylab = list(label = ylab, cex = 2),
+                  auto.key = list(columns = 3, cex = 2),
+                  par.settings = simpleTheme(pch = 21, cex = 2),
+                  par.strip.text = list(cex = 1.8),
+                  axis.text = list(cex = 2),
+                  scales = list(cex = 1.2),
+                  panel = function(...) {
+                    panel.abline(h = .05, lty = 'dotted', col = 'black', lwd = 2)
+                    panel.xyplot(...)
+                }, ...)
 }
