@@ -24,6 +24,7 @@ In conclusion, we found that current practices are unsound, incoherent, and redu
 
 ## Simulation Parameters
 ```{r}
+library('eRm')
 library('simrasch')
 
 items <- c(12, 24, 60, 120) # number of items
