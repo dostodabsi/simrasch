@@ -55,7 +55,7 @@ sim_mult <- sim(n, items, 1000, sim.xdim,
 ```
 
 ## Results
-Because running this will take considerable amounts of time, we have included the results in this package. Note that the summarise function is a convenience function that stores the results of the compute_error from the package simrasch into a data.frame. The column **pvalue** and **infit** do not actually describe p-values nor infit statistics, but are percentages about how often an item would be rejected based on the p-value or infit statistics, respectively.
+Because running this will take considerable amounts of time, we have included the results in this package. Note that the summarise function is a convenience function that stores the results of the compute_err from the package simrasch into a data.frame. The column **pvalue** and **infit** do not actually describe p-values nor infit statistics, but are percentages about how often an item would be rejected based on the p-value or infit statistics, respectively.
 
 ```{r, message = FALSE}
 load('../data/sim_2pl1.rda')

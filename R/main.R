@@ -146,51 +146,28 @@ sim <- function(n, items, times, model_sim, ..., Sigma = NULL,
 }
 
 
-#' Compute the items suggested to be removed / revised based on item infit
+#' Compute the items suggested to be removed / revised based on item infit / pvalues
 #'
 #' @param sim_res: simulation results
 #' @param cutoff: itemfit cutoff
 #' @return returns a list with alpha / beta errors across all
-#' person x item combinations aggregated over all matrices, and the
-#' number of items removed (for each matrix)
+#' and the number of items removed (for each matrix)
 #' @examples
-#' compute_errors(sim_res)
-compute_errors <- function(sim_res, cutoff = c(.8, 1.2)) {
-  low <- cutoff[1]
-  high <- cutoff[2]
-  error_res <- list()
-  nr_sims <- length(sim_res)
-
-  for (i in 1:nr_sims) {
-    pvals <- 0
-    cursim <- sim_res[[i]]
-
-    times <- dim(cursim)[3]
-    nr_items <- attr(cursim, 'nitems')
-    normalizer <- times * nr_items
-    rm_items <- rep(NA, times)
-
-    for (j in 1:times) {
-      rm_items_mat <- 0
-      for (k in 1:nr_items) {
-        instat <- cursim[k, , j][1]
-        pval <- cursim[k, , j][3]
-
-        if (pval <= .05) {
-          pvals <- pvals + 1
-        }
-
-        if (instat < low || instat > high) {
-          rm_items_mat <- rm_items_mat + 1
-        }
-      }
-      rm_items[j] <- rm_items_mat
-    }
-    error_res[[i]] <- list('rm_percent' = sum(rm_items) / normalizer,
-                           'n' = attr(cursim, 'n'), 'nr_items' = nr_items,
-                           'rm_items' = rm_items, 'pval' = pvals / normalizer)
-  }
-  error_res
+#' compute_err(sim_res)
+compute_err <- function(sim_res, cutoff = c(.8, 1.2)) {
+  
+  pval_fn <- function(pvals) sum(pvals <= .05)
+  infit_fn <- function(fit) sum(fit < cutoff[1] | fit > cutoff[2])
+  
+  lapply(sim_res, function(arr) {
+    nr_items <- attr(arr, 'nitems')
+    normalizer <- nr_items * dim(arr)[3]
+    infit <- sum(apply(arr[, 1, ], 2, infit_fn))
+    pvals <- sum(apply(arr[, 3, ], 2, pval_fn))
+    list('rm_infit' = infit / normalizer,
+         'rm_pval' = pvals / normalizer,
+         'nr_items' = nr_items, 'n' = attr(arr, 'n'))
+  })
 }
 
 
@@ -207,11 +184,11 @@ compute_errors <- function(sim_res, cutoff = c(.8, 1.2)) {
 #' @examples
 #' summarize(err_res)
 summarize <- function(sim_res, cutoff = c(.8, 1.2)) {
-  err_res <- compute_errors(sim_res, cutoff = cutoff)
+  err_res <- compute_err(sim_res, cutoff = cutoff)
   pick <- function(sim) c('sims' = length(sim$rm_items),
                            'n' = sim$n, 'items' = sim$nr_items,
-                           'pval' = round(sim$pval, 3),
-                           'infit' = round(sim$rm_percent, 3),
+                           'pval' = round(sim$rm_pval, 3),
+                           'infit' = round(sim$rm_infit, 3),
                            'simtype' = attr(sim_res, 'simtype')[1],
                            'violation' = attr(sim_res, 'simtype')[2])
 
