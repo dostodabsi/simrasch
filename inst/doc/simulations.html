@@ -10,7 +10,7 @@
 
 <meta name="author" content="Peter Edelsbrunner, Fabian Dablander" />
 
-<meta name="date" content="2015-07-19" />
+<meta name="date" content="2015-07-21" />
 
 <title>Simulations</title>
 
@@ -54,16 +54,17 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Simulations</h1>
 <h4 class="author"><em>Peter Edelsbrunner, Fabian Dablander</em></h4>
-<h4 class="date"><em>2015-07-19</em></h4>
+<h4 class="date"><em>2015-07-21</em></h4>
 </div>
 
 
-<div id="vignette-info" class="section level2">
-<h2>Vignette Info</h2>
-<p>This gives an overview of the simulations we presented at <a href="http://www.ecpa13.com/">ECPA13</a>. In our talk (see the respective vignette), we reviewed the practices of Rasch modeling in the literature on scientific thinking. We found that researchers most strongly rely on item infit statistics to assess the fit of the Rasch model. These infit statistics have been criticised for quite some time now (see for example Kreiner &amp; Christensen, 2013). They assess the fit on an item-level, assuming that the Rasch model holds globally - which never is tested in the literature. In these simulations below we tried to build up the intuition that this is a fundamentally unsound practice.</p>
+<div id="vignette-overview" class="section level2">
+<h2>Vignette Overview</h2>
+<p>This gives an overview of the simulations we presented at <a href="http://www.ecpa13.com/">ECPA13</a>. In our talk (see the respective vignette), we reviewed the practices of Rasch modeling in the literature on scientific thinking. We found that researchers most strongly rely on item infit statistics to assess the fit of the Rasch model. These infit statistics have been criticised for quite some time now (see for example Kreiner &amp; Christensen, 2013). They assess the fit on an item-level, assuming that the Rasch model holds globally - which rarely is tested in the literature. The simulations below show that sole reliance on infit statistics is inappropriate. Instead we draw attention to several alternative model tests, all of which have been implemented in the free and open source software R.</p>
 <p>First, we looked at how infit statistics behave when the Rasch model is true. It turns out that, contrary to the statistically inconsistent p-values, with increasing sample and item size no items would be removed.</p>
-<p>Second, we looked at how they behave when equal item discrimination is violated. We found that one would remove a few items (as is common practice in the literature). Crucially, using this reasoning, one would never reject the Rasch model, only items. Tautologically, researchers then conclude that, based on the fit of the Rasch model, scientific thinking is a unidimensional construct. Let’s just give them the benefit of the doubt and assume that assessing the fit of the Rasch model using infit statistics is sound (it is not). Does the Rasch model hold after removing them? Using a simple Andersen’s Likelihood Ratio test splitted at the median group ability, we found that this is not at all the case! In most of the cases, the Rasch model would be rejected.</p>
-<p>In the third simulation, we looked at theoretical models that researchers have about scientific thinking. Most of the time, scientific thinking is assumed to be three two five dimensional, so we simulated from a correlated four dimensional factor structure. How do item infit statistics respond to such a crucial violation of the Rasch model? Not at all! Actually, not a single item (based on the common cutoff .8 - 1.2) would be removed.</p>
+<p>Second, we looked at how they behave when equal item discrimination is violated. We found that one would remove a few items (as is common practice in the literature), depending on sample and item size. Crucially, using this reasoning, one would never reject the Rasch model, only items. Tautologically, researchers then conclude that, based on the fit of the Rasch model (assessed only through infit statistics) after removing items, scientific thinking is a unidimensional construct. Theoretically, this is unsound because one penetrates the item so long until the Rasch model fits; it is inadequate to subsequently claim that scientific thinking is a unidimensional construct.</p>
+<p>Practically, there is another issue. Does the Rasch model actually hold after one has removed several items based on infit statistics? From the literature, we cannot judge this, because researchers do not test global model fit (before or after). This is the beauty of simulations! Using a simple Andersen’s Likelihood Ratio test splitted at the median group ability, we found that this is not at all the case! That is, we fitted the Rasch model, removed items based on the infit statistics, and then refitted the Rasch model on the “clean data”. In nearly all of the cases, the Rasch model would have to be rejected - based only on a simple Andersen’t Likelihood Ratio test.</p>
+<p>In the third simulation, we looked at theoretical models that researchers have about scientific thinking. Most of the time, scientific thinking is assumed to be three to five dimensional, so we simulated from a correlated four dimensional factor structure. How do item infit statistics respond to such a crucial violation of the Rasch model? Not at all! Actually, not a single item (based on the common cutoff .8 - 1.2) would be removed.</p>
 <p>In conclusion, we found that current practices are unsound, incoherent, and reductionist. We suggest a suite of tests researchers might employ to adequately assess the fit of the Rasch model. We further suggest that researchers match their theoretical models with their statistical ones. Importantly, we conjecture that solely relying on the proprietory software ConQuest (all research groups used this software to fit and “test” their models) limits the statistical possibilities and narrows theoretical thinking. We suggest using the free, open-source statistical software R, in which all of the tests mentioned in the last section are implemented.</p>
 </div>
 <div id="simulation-parameters" class="section level2">
@@ -144,66 +145,66 @@ eRm::<span class="kw">itemfit</span>(pp)</code></pre>
 <pre><code>## 
 ## Itemfit Statistics: 
 ##        Chisq  df p-value Outfit MSQ Infit MSQ Outfit t Infit t
-## I1   847.097 999   1.000      0.847     0.881    -4.18   -4.75
-## I2   842.647 999   1.000      0.843     0.886    -3.92   -4.15
-## I3  1133.380 999   0.002      1.133     1.088     3.08    3.02
-## I4   934.635 999   0.927      0.935     0.985    -1.10   -0.40
-## I5   805.989 999   1.000      0.806     0.899    -2.91   -2.71
-## I6   967.733 999   0.756      0.968     0.975    -0.82   -0.95
-## I7   910.416 999   0.979      0.910     0.938    -2.42   -2.42
-## I8  1049.390 999   0.131      1.049     1.036     1.05    1.27
-## I9  1305.809 999   0.000      1.306     1.214     5.64    6.30
-## I10 1089.015 999   0.024      1.089     1.080     2.27    2.94
-## I11 1094.111 999   0.019      1.094     1.079     1.94    2.52
-## I12  870.986 999   0.999      0.871     0.913    -3.12   -3.08
-## I13 1204.160 999   0.000      1.204     1.139     4.57    4.95
-## I14 1082.364 999   0.034      1.082     1.059     1.62    1.98
-## I15 1093.871 999   0.019      1.094     1.032     1.62    0.98
-## I16 1122.972 999   0.004      1.123     1.049     2.05    1.35
-## I17  953.444 999   0.846      0.953     0.987    -0.80   -0.39
-## I18  992.746 999   0.550      0.993     0.991    -0.12   -0.26
-## I19  863.466 999   0.999      0.863     0.897    -3.76   -4.06
-## I20  479.478 999   1.000      0.479     0.836    -3.34   -1.65
-## I21 1230.973 999   0.000      1.231     1.167     5.44    6.06
-## I22 1205.753 999   0.000      1.206     1.115     4.66    4.15
-## I23 1136.982 999   0.001      1.137     1.096     3.44    3.59
-## I24  615.831 999   1.000      0.616     0.833    -4.04   -2.84
-## I25  877.959 999   0.998      0.878     0.918    -3.33   -3.21
-## I26  891.005 999   0.994      0.891     0.927    -2.97   -2.84
-## I27 1141.813 999   0.001      1.142     1.113     2.78    3.47
-## I28 1177.248 999   0.000      1.177     1.128     3.88    4.24
-## I29  931.461 999   0.937      0.931     0.938    -1.61   -2.17
-## I30 1134.518 999   0.002      1.135     1.091     2.84    3.16
-## I31 1111.860 999   0.007      1.112     1.085     2.55    3.06
-## I32  858.652 999   0.999      0.859     0.910    -2.90   -3.10
-## I33 1011.209 999   0.387      1.011     0.998     0.21   -0.04
-## I34  638.051 999   1.000      0.638     0.799    -5.05   -4.94
-## I35  661.328 999   1.000      0.661     0.819    -4.27   -3.76
-## I36 1218.287 999   0.000      1.218     1.149     5.22    5.27
-## I37  923.133 999   0.958      0.923     0.979    -0.90   -0.42
-## I38 1121.648 999   0.004      1.122     1.085     1.69    2.02
-## I39 1003.713 999   0.452      1.004     0.997     0.11   -0.09
-## I40  960.971 999   0.801      0.961     0.982    -1.02   -0.69
-## I41  890.517 999   0.994      0.891     0.904    -2.14   -3.25
-## I42  870.610 999   0.999      0.871     0.911    -3.21   -3.40
-## I43  777.464 999   1.000      0.777     0.836    -5.42   -5.89
-## I44  855.951 999   1.000      0.856     0.915    -3.19   -3.07
-## I45  880.385 999   0.997      0.880     0.956    -1.42   -0.89
-## I46 1355.590 999   0.000      1.356     1.251     7.71    8.69
-## I47  648.630 999   1.000      0.649     0.760    -6.34   -6.84
-## I48  849.122 999   1.000      0.849     0.886    -4.10   -4.54
-## I49 1026.632 999   0.265      1.027     1.030     0.71    1.15
-## I50  608.639 999   1.000      0.609     0.674   -11.87  -13.88
-## I51  887.776 999   0.995      0.888     0.944    -1.63   -1.35
-## I52 1080.163 999   0.037      1.080     1.069     2.03    2.60
-## I53 1407.015 999   0.000      1.407     1.257     9.51    9.11
-## I54  979.103 999   0.668      0.979     0.999    -0.49   -0.02
-## I55  800.723 999   1.000      0.801     0.862    -4.77   -4.88
-## I56 1020.131 999   0.314      1.020     1.010     0.45    0.35
-## I57  953.456 999   0.846      0.953     0.948    -0.65   -1.37
-## I58 1258.507 999   0.000      1.259     1.186     6.31    6.71
-## I59  950.699 999   0.861      0.951     0.983    -0.87   -0.47
-## I60 1048.034 999   0.137      1.048     1.041     0.92    1.33</code></pre>
+## I1  1036.962 999   0.197      1.037     1.017     0.61    0.50
+## I2  1081.507 999   0.035      1.082     1.087     1.91    3.12
+## I3   885.191 999   0.996      0.885     0.964    -0.73   -0.44
+## I4  1038.345 999   0.188      1.038     0.999     0.52   -0.02
+## I5   776.932 999   1.000      0.777     0.843    -4.73   -5.36
+## I6  1140.646 999   0.001      1.141     1.061     2.20    1.76
+## I7  1044.616 999   0.154      1.045     1.027     0.46    0.50
+## I8   859.386 999   0.999      0.859     0.872    -2.91   -4.48
+## I9   911.244 999   0.978      0.911     0.932    -1.39   -1.96
+## I10 1267.270 999   0.000      1.267     1.117     4.02    3.19
+## I11 1107.490 999   0.009      1.107     1.073     2.49    2.66
+## I12  663.558 999   1.000      0.664     0.852    -2.68   -2.15
+## I13 1468.887 999   0.000      1.469     1.280     9.75    9.51
+## I14 1159.078 999   0.000      1.159     1.067     1.55    1.27
+## I15 1322.212 999   0.000      1.322     1.226     6.93    7.73
+## I16 1238.390 999   0.000      1.238     1.153     3.36    3.91
+## I17 1003.627 999   0.453      1.004     0.972     0.08   -0.73
+## I18  800.411 999   1.000      0.800     0.850    -5.04   -5.78
+## I19  548.895 999   1.000      0.549     0.705    -7.61   -8.33
+## I20  928.852 999   0.944      0.929     0.948    -1.54   -1.81
+## I21  627.474 999   1.000      0.627     0.740    -7.80   -8.76
+## I22 1052.970 999   0.115      1.053     1.039     1.08    1.29
+## I23  757.732 999   1.000      0.758     0.834    -5.00   -5.54
+## I24 1387.346 999   0.000      1.387     1.205     5.62    5.45
+## I25 1350.613 999   0.000      1.351     1.226     7.57    7.78
+## I26  876.373 999   0.998      0.876     0.919    -3.08   -3.07
+## I27  799.212 999   1.000      0.799     0.861    -4.77   -5.20
+## I28  985.220 999   0.616      0.985     0.970    -0.31   -1.05
+## I29  920.679 999   0.963      0.921     0.951    -1.88   -1.81
+## I30 1161.704 999   0.000      1.162     1.069     2.53    1.99
+## I31  807.655 999   1.000      0.808     0.865    -4.56   -4.97
+## I32  668.747 999   1.000      0.669     0.802    -5.09   -5.21
+## I33  967.721 999   0.756      0.968     0.983    -0.74   -0.61
+## I34  859.255 999   0.999      0.859     0.906    -3.43   -3.55
+## I35 1044.985 999   0.152      1.045     1.029     0.68    0.81
+## I36  667.782 999   1.000      0.668     0.788    -5.49   -6.22
+## I37  588.863 999   1.000      0.589     0.812    -3.88   -3.27
+## I38  873.270 999   0.998      0.873     0.904    -2.48   -3.11
+## I39  717.812 999   1.000      0.718     0.897    -2.37   -1.58
+## I40  906.681 999   0.983      0.907     0.935    -2.23   -2.43
+## I41 1112.925 999   0.007      1.113     1.025     1.29    0.55
+## I42  931.485 999   0.937      0.931     0.948    -1.40   -1.72
+## I43 1344.813 999   0.000      1.345     1.227     7.34    7.74
+## I44 1320.736 999   0.000      1.321     1.226     6.60    7.52
+## I45  910.860 999   0.978      0.911     0.931    -1.03   -1.58
+## I46 1172.774 999   0.000      1.173     1.128     3.40    4.22
+## I47  667.290 999   1.000      0.667     0.899    -2.95   -1.58
+## I48  891.619 999   0.993      0.892     0.946    -1.94   -1.61
+## I49 1074.654 999   0.048      1.075     1.037     0.92    0.84
+## I50 1449.668 999   0.000      1.450     1.219     9.25    7.53
+## I51 1054.723 999   0.108      1.055     1.048     1.21    1.67
+## I52  993.614 999   0.542      0.994     1.003    -0.12    0.11
+## I53 1016.354 999   0.344      1.016     0.989     0.40   -0.41
+## I54 1125.029 999   0.003      1.125     1.098     2.51    3.21
+## I55 1098.781 999   0.015      1.099     1.051     1.62    1.51
+## I56  916.886 999   0.970      0.917     0.952    -2.03   -1.81
+## I57 1215.182 999   0.000      1.215     1.043     2.13    0.88
+## I58  825.813 999   1.000      0.826     0.868    -2.11   -2.95
+## I59  857.395 999   1.000      0.857     0.897    -3.57   -3.95
+## I60  902.777 999   0.986      0.903     0.962    -1.24   -0.91</code></pre>
 </div>
 <div id="simulation-results" class="section level2">
 <h2>Simulation results</h2>
@@ -289,9 +290,9 @@ mbirn &lt;-<span class="st"> </span><span class="kw">mirt</span>(dat, <span clas
 <pre><code>## 
 ## Model 1: mirt(data = dat, model = 1, itemtype = &quot;Rasch&quot;, verbose = FALSE)
 ## Model 2: mirt(data = dat, model = 1, itemtype = &quot;2PL&quot;, verbose = FALSE)</code></pre>
-<pre><code>##        AIC     AICc   SABIC      BIC    logLik       X2  df   p
-## 1 68901.86 68909.93 69007.5 69201.23 -34389.93      NaN NaN NaN
-## 2 67699.49 67732.53 67907.3 68288.42 -33729.75 1320.368  59   0</code></pre>
+<pre><code>##        AIC     AICc    SABIC      BIC    logLik       X2  df   p
+## 1 65190.43 65198.50 65296.07 65489.80 -32534.22      NaN NaN NaN
+## 2 63940.75 63973.78 64148.55 64529.68 -31850.37 1367.686  59   0</code></pre>
 <p>We find that the 2PL model fits substantially better than the 1PL model.</p>
 <p>Until now, not much is gained. It is rather obvious that for assessing slope-invariant ICCs one should test the 1PL against the 2PL model. The 2PL model does not have such nice psychometric properties as the Rasch model. For example, the sum score is no longer a sufficient statistic for a person’s ability. Additionally, specific objectivity does not hold; i.e. it is now relevant on which item two persons are compared. It is therefore quite understandable and reasonable to revise (or throw out) items that cause the 1PL model to fail. In applied settings, specific objectivity and the sum score being a sufficient statistic might be of great importance.</p>
 <p>However, coming back to the analogy of the “two schools” of Rasch modeling, researchers need to be aware in which one they are currently attending. Simply throwing out items due to low or high infit is no good. These items might be of theoretical importance, tapping vital parts of the construct scientific reasoning.</p>
@@ -320,66 +321,66 @@ eRm::<span class="kw">itemfit</span>(pp)</code></pre>
 <pre><code>## 
 ## Itemfit Statistics: 
 ##        Chisq  df p-value Outfit MSQ Infit MSQ Outfit t Infit t
-## I1   992.860 999   0.549      0.993     0.989    -0.09   -0.19
-## I2   990.273 999   0.572      0.990     0.991    -0.58   -0.57
-## I3   991.055 999   0.565      0.991     0.978    -0.06   -0.25
-## I4   967.430 999   0.758      0.967     0.975    -0.66   -0.59
-## I5  1000.309 999   0.482      1.000     1.001     0.02    0.06
-## I6   958.991 999   0.814      0.959     0.973    -0.74   -0.57
-## I7   995.509 999   0.525      0.996     0.997    -0.19   -0.16
-## I8  1030.320 999   0.239      1.030     1.025     1.09    1.05
-## I9   980.477 999   0.656      0.980     0.985    -1.21   -1.03
-## I10 1013.194 999   0.370      1.013     1.008     0.37    0.27
-## I11  994.461 999   0.535      0.994     0.996    -0.10   -0.09
-## I12 1007.303 999   0.421      1.007     1.006     0.38    0.34
-## I13  965.010 999   0.775      0.965     0.966    -0.75   -0.89
-## I14  960.691 999   0.803      0.961     0.965    -2.48   -2.44
-## I15 1016.688 999   0.342      1.017     1.005     0.65    0.22
-## I16  942.068 999   0.900      0.942     0.957    -1.28   -1.14
-## I17  989.035 999   0.583      0.989     0.994    -0.41   -0.25
-## I18 1009.796 999   0.399      1.010     1.007     0.56    0.44
-## I19  999.727 999   0.488      1.000     0.985     0.01   -0.34
-## I20 1007.850 999   0.416      1.008     1.005     0.31    0.22
-## I21 1020.571 999   0.311      1.021     1.016     1.15    1.02
-## I22  974.198 999   0.707      0.974     0.980    -1.05   -0.94
-## I23 1028.767 999   0.250      1.029     0.990     0.35   -0.10
-## I24 1051.264 999   0.122      1.051     0.977     0.42   -0.16
-## I25 1005.583 999   0.436      1.006     0.999     0.15   -0.01
-## I26  995.078 999   0.529      0.995     0.995    -0.30   -0.32
-## I27  989.035 999   0.583      0.989     0.985    -0.14   -0.25
-## I28 1030.827 999   0.236      1.031     1.029     1.59    1.73
-## I29 1000.114 999   0.484      1.000     0.995     0.01   -0.28
-## I30  990.895 999   0.566      0.991     0.993    -0.46   -0.42
-## I31 1003.988 999   0.450      1.004     1.003     0.14    0.10
-## I32 1024.057 999   0.284      1.024     1.003     0.49    0.09
-## I33  982.569 999   0.639      0.983     0.984    -0.63   -0.66
-## I34  964.380 999   0.779      0.964     0.967    -2.03   -2.12
-## I35  991.384 999   0.562      0.991     0.990    -0.16   -0.22
-## I36  996.091 999   0.520      0.996     1.001    -0.13    0.04
-## I37  984.063 999   0.626      0.984     0.985    -0.96   -0.98
-## I38 1035.657 999   0.205      1.036     1.012     0.86    0.35
-## I39  993.477 999   0.543      0.993     0.985    -0.09   -0.28
-## I40 1013.339 999   0.369      1.013     1.009     0.70    0.52
-## I41 1009.349 999   0.403      1.009     1.010     0.54    0.63
-## I42  983.877 999   0.627      0.984     0.984    -0.90   -1.02
-## I43  985.280 999   0.615      0.985     0.989    -0.89   -0.75
-## I44 1029.064 999   0.248      1.029     1.022     0.99    0.90
-## I45  997.258 999   0.510      0.997     0.999    -0.16   -0.04
-## I46  940.395 999   0.907      0.940     0.973    -1.17   -0.61
-## I47 1017.613 999   0.334      1.018     1.016     1.06    1.05
-## I48  998.597 999   0.498      0.999     0.998    -0.06   -0.11
-## I49 1008.554 999   0.410      1.009     0.996     0.27   -0.14
-## I50  973.229 999   0.715      0.973     0.987    -0.43   -0.25
-## I51  989.561 999   0.578      0.990     0.993    -0.44   -0.34
-## I52  986.327 999   0.606      0.986     0.990    -0.75   -0.64
-## I53  973.804 999   0.710      0.974     0.996    -0.59   -0.10
-## I54 1004.874 999   0.442      1.005     1.003     0.24    0.15
-## I55  988.099 999   0.591      0.988     0.990    -0.23   -0.24
-## I56  990.333 999   0.571      0.990     0.992    -0.59   -0.55
-## I57  968.283 999   0.752      0.968     0.974    -1.39   -1.30
-## I58  980.044 999   0.660      0.980     0.977    -0.74   -1.02
-## I59  962.160 999   0.794      0.962     0.973    -0.20   -0.16
-## I60 1006.641 999   0.426      1.007     1.006     0.23    0.25</code></pre>
+## I1  1005.328 999   0.438      1.005     1.008     0.23    0.41
+## I2   981.008 999   0.652      0.981     0.989    -0.53   -0.36
+## I3   991.609 999   0.560      0.992     0.987    -0.19   -0.36
+## I4   969.853 999   0.740      0.970     0.974    -1.20   -1.19
+## I5  1056.770 999   0.100      1.057     1.034     1.34    0.97
+## I6   983.213 999   0.633      0.983     0.986    -0.50   -0.49
+## I7  1027.342 999   0.260      1.027     1.023     1.40    1.37
+## I8   974.258 999   0.707      0.974     0.984    -0.60   -0.43
+## I9  1015.538 999   0.351      1.016     1.006     0.60    0.28
+## I10  974.599 999   0.704      0.975     0.979    -1.52   -1.43
+## I11  982.243 999   0.641      0.982     0.981    -0.85   -1.03
+## I12  994.360 999   0.535      0.994     0.988    -0.10   -0.28
+## I13 1026.477 999   0.266      1.026     0.998     0.50   -0.03
+## I14 1009.499 999   0.402      1.009     1.003     0.31    0.10
+## I15  980.063 999   0.660      0.980     0.985    -0.93   -0.82
+## I16 1024.483 999   0.281      1.024     1.023     1.42    1.48
+## I17  956.167 999   0.831      0.956     0.958    -1.04   -1.19
+## I18 1003.303 999   0.456      1.003     1.001     0.17    0.04
+## I19  992.483 999   0.552      0.992     0.989    -0.11   -0.21
+## I20  985.939 999   0.610      0.986     0.980    -0.18   -0.33
+## I21  965.362 999   0.772      0.965     0.973    -1.51   -1.35
+## I22 1001.843 999   0.469      1.002     1.002     0.07    0.08
+## I23 1005.642 999   0.435      1.006     1.001     0.35    0.06
+## I24 1000.326 999   0.482      1.000     0.999     0.03   -0.06
+## I25  993.224 999   0.546      0.993     0.992    -0.42   -0.53
+## I26  995.963 999   0.521      0.996     0.999    -0.23   -0.09
+## I27 1014.273 999   0.361      1.014     1.011     0.54    0.51
+## I28 1011.303 999   0.386      1.011     1.009     0.71    0.62
+## I29  987.641 999   0.595      0.988     0.989    -0.37   -0.39
+## I30 1000.052 999   0.485      1.000     1.000     0.02    0.00
+## I31 1004.452 999   0.446      1.004     1.002     0.23    0.13
+## I32  991.792 999   0.558      0.992     0.988    -0.23   -0.39
+## I33  973.474 999   0.713      0.973     0.978    -0.98   -0.95
+## I34  995.933 999   0.521      0.996     0.999    -0.22   -0.09
+## I35  970.069 999   0.738      0.970     0.985    -0.75   -0.44
+## I36 1003.636 999   0.453      1.004     1.004     0.11    0.13
+## I37 1011.243 999   0.387      1.011     1.004     0.39    0.18
+## I38  988.554 999   0.587      0.989     0.990    -0.51   -0.54
+## I39 1009.407 999   0.402      1.009     0.979     0.13   -0.24
+## I40 1014.720 999   0.358      1.015     0.994     0.33   -0.14
+## I41 1013.750 999   0.366      1.014     1.016     0.68    0.92
+## I42  989.086 999   0.582      0.989     0.999    -0.41   -0.02
+## I43  989.472 999   0.579      0.989     0.992    -0.64   -0.57
+## I44  990.612 999   0.569      0.991     0.990    -0.43   -0.55
+## I45 1013.396 999   0.369      1.013     1.010     0.44    0.38
+## I46  981.353 999   0.649      0.981     0.986    -0.91   -0.80
+## I47  977.132 999   0.684      0.977     0.972    -0.69   -1.02
+## I48 1007.142 999   0.422      1.007     1.006     0.27    0.25
+## I49  914.995 999   0.973      0.915     0.967    -0.96   -0.42
+## I50  988.961 999   0.583      0.989     0.995    -0.39   -0.22
+## I51  959.467 999   0.811      0.959     0.981    -0.69   -0.37
+## I52  994.140 999   0.537      0.994     0.993    -0.16   -0.22
+## I53 1018.763 999   0.325      1.019     0.982     0.22   -0.19
+## I54  985.447 999   0.614      0.985     0.991    -0.43   -0.31
+## I55  994.628 999   0.533      0.995     0.998    -0.16   -0.08
+## I56  998.592 999   0.498      0.999     0.997    -0.03   -0.11
+## I57  997.957 999   0.503      0.998     1.000    -0.10    0.02
+## I58 1020.932 999   0.308      1.021     1.012     0.78    0.53
+## I59  976.556 999   0.688      0.977     0.980    -0.61   -0.62
+## I60  990.835 999   0.567      0.991     0.994    -0.48   -0.34</code></pre>
 <p>When fitting a unidimensional Rasch model to the 4-dimensional data, and inspecting the infit statistics, one finds that they look reasonable; we would not exlude any items. The researcher might be quite happy about this. However, in terms of theory, we are making a grave mistake. We assume that we have a unidimensional construct, when in fact it is four-dimensional! Infit statistics <strong>completely miss the point</strong>.</p>
 </div>
 <div id="simulation-results-1" class="section level2">
@@ -391,7 +392,7 @@ eRm::<span class="kw">itemfit</span>(pp)</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">MLoef</span>(mrasch, <span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">4</span>, <span class="dt">times =</span> items /<span class="st"> </span><span class="dv">4</span>))</code></pre>
 <pre><code>## 
 ## Martin-Loef-Test (split criterion: user-defined)
-## LR-value: 4332.237 
+## LR-value: 4346.278 
 ## Chi-square df: 65472 
 ## p-value: 1</code></pre>
 <p>The classical Martin Loef test is not sensitive enough. Thus we rely on an ‘exact’ version as suggested by Koller et al. (2015).</p>
@@ -420,7 +421,7 @@ fitm &lt;-<span class="st"> </span><span class="kw">mirt</span>(dat, <span class
 <p>The reliability of the pseudo one-dimension is</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fscores</span>(fitm, <span class="dt">returnER =</span> <span class="ot">TRUE</span>)</code></pre>
 <pre><code>##        F1 
-## 0.6477556</code></pre>
+## 0.6502505</code></pre>
 <p>and is rather low. It is known that when fitting a unidimensional model to multidimensional data that the reliability is low. Most instruments in the literature on scientific thinking show similar low reliability (.5 - .6). Might this represent what is actually happening in the field?</p>
 <p>Additionally, by aggregating over different subsets, we loose information, e.g. in terms of criterion validity. If high score on scientific thinking predict say university grades, which facet of scientific thinking is the driving force?</p>
 </div>
@@ -428,7 +429,7 @@ fitm &lt;-<span class="st"> </span><span class="kw">mirt</span>(dat, <span class
 <div id="conclusion" class="section level1">
 <h1>Conclusion</h1>
 <p>Item infit statistics were developed for applied Rasch modeling. The adage is that instead of changing our model, we need to change our data because the psychometric properties of the Rasch model are just that good. For applied settings, we would not want to miss out one them!</p>
-<p>However, for theory development, solely relying on item infit is detrimental. The current literature on scientific reasoning is beset by tautological testing. Researchers set out to test whether scientific reasoning can be considered unidimensional. They then collect data measuring four theoretically motivated, distinct subsets of scientific reasoning, and fit a Rasch model. Based on item infit statistics, items that do not “fit” - but which certainly are of theoretical value! - are removed. It is concluded that the Rasch model fits, and thus that scientific reasoning is unidimensional.</p>
+<p>However, for theory development, solely relying on item infit is detrimental. The current literature on scientific reasoning is beset by tautological testing. Researchers set out to test whether scientific reasoning can be considered unidimensional. They then collect data measuring four theoretically motivated, distinct subsets of scientific reasoning, and fit a Rasch model. Based on item infit statistics, items that do not “fit” - but which might be of theoretical value! - are removed. It is concluded that the Rasch model fits, and thus that scientific reasoning is unidimensional.</p>
 <p>We have shown that infit statistics cannot detect multidimensionality. Researchers need to extend their repertoire of tests.</p>
 </div>
 <div id="suggestions" class="section level1">

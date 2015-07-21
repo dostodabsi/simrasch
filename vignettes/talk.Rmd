@@ -257,16 +257,18 @@ $$
 ![res1](img/pl_plot.png)
     
 ## Simulation I
-- Result:
+- Results:
     * Note that **we did not test the Rasch model**
-    * We assumed that it holds and threw out certain items 
-    * It is not at all clear that the Rasch model holds now
-    * In fact, it does not!
+    * We assumed that it holds and threw out certain items
+    
+> - Question:
+    * After removal of "bad" items, does the Rasch model hold?
+    * Not tested in the literature - let's simulate it!
     
 ## 
 ![res2](img/LR_plot.png)
 
-## Itemfit: Simulation II
+## Simulation II
 <div class="notes">
       For a second simulation scenario, we reviewed which theoretical models of scientific thinking the researchers assumed.
       Most researchers assumed between 3 and 5 correlated facets of scientific thinking.
@@ -295,13 +297,13 @@ $$
 ![mult](img/mult_plot.png)
 
 ## Simulation II
-- Result:
+- Results:
     * item fit statistics **completely miss the point**
     * very few items "have to be removed"
-    * Unidimensional Rasch model: Shows low reliability similar to reviewed articles (about .5 - .6)
+    * Unidimensional Rasch model shows low reliability (about .5 - .6)
     
-- Conclusion:
-    * **Simulated scenario yields results similar to reviewed articles.**
+> - Conclusion:
+    * **Simulated scenario yields results similar to reviewed articles**
     * **Might the simulated scenario reflect what is happening in the field?**
 
 ## Practices in the Field: **Interpretation**
@@ -400,3 +402,6 @@ $$
     * Network models (Schmittman et al., 2013)
     * Longitudinal and experimental designs to examine interactions
 ![structure](img/structure.png)
+
+## Thanks! {.flexbox .vcenter}
+[https://github.com/dostodabsi/simrasch](https://github.com/dostodabsi/simrasch)
