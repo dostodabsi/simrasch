@@ -227,7 +227,7 @@ $$
     * Item removal might **reduce construct validity**.
     
     
-> - **Item infit statistics are in general no adequate means to evaluate fit of the Rasch model.**
+> - **Item infit statistics are inadequate to evaluate the fit of the Rasch model.**
     
 ## Itemfit: Simulations
 <div class="notes">
@@ -359,7 +359,7 @@ $$
 > - Researchers apply practices of the *utility school*. **Potential reasons?**
     * Following large scale programs
     * Limiting software (ConQuest)
-    * Lack of knowledge about Rasch foundations and model tests
+    * Lack of knowledge about alternative model tests
 
 ## Suggestions
 <div class="notes">
